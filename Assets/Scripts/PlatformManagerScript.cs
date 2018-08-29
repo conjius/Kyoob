@@ -80,7 +80,7 @@ public class PlatformManagerScript : MonoBehaviour {
         newParentPlatform.tag = "Platform";
         _lastSpawnedSize = Mathf.RoundToInt(Random.Range(MinPlatformSize,
             MaxPlatformSize));
-        newParentPlatform.transform.localScale = new Vector3(
+        newPlatform.transform.localScale = new Vector3(
             _lastSpawnedSize, newParentPlatform.transform.lossyScale.y,
             newParentPlatform.transform.lossyScale.z);
         Platforms.Add(newParentPlatform);
@@ -90,6 +90,19 @@ public class PlatformManagerScript : MonoBehaviour {
     private void MovePlatforms() {
         foreach (var platform in Platforms) {
             if (platform == null) continue;
+            if (platform.name != "Start Platform" &&
+                platform.name != "instructions1" &&
+                platform.name != "instructions2" &&
+                platform
+                    .GetComponent<Animator>()
+                    .GetCurrentAnimatorStateInfo(0)
+                    .IsName(
+                        "PlatformParentDestroyedAnimation")) {
+                Destroy(platform.transform.GetChild(0).gameObject);
+                Destroy(platform);
+                continue;
+            }
+
             if (platform.CompareTag("Instructions")) {
                 platform.transform.Translate(
                     Vector3.left * 2.0f * PlatformSpeed * Time.deltaTime);
@@ -101,12 +114,21 @@ public class PlatformManagerScript : MonoBehaviour {
                     Vector3.left * PlatformSpeed * Time.deltaTime);
             }
         }
+
+        Platforms.RemoveAll(platform => platform.name != "Start Platform" &&
+                                        platform.name != "instructions1" &&
+                                        platform.name != "instructions2" &&
+                                        platform
+                                            .GetComponent<Animator>()
+                                            .GetCurrentAnimatorStateInfo(0)
+                                            .IsName(
+                                                "PlatformParentDestroyedAnimation"));
     }
 
     private void UpdatePlatformSpeed() {
         // platform speed increases linearly with score. +1 speed for every
         // 1/PlatformSpeedAcceleration points
-        var score = GameObject.Find("Player")
+        var score = GameObject.Find("Player Animation Parent/Player")
             .GetComponent<PlayerScriptWithAnimator>().Score;
         PlatformSpeed =
             PlatformSpeedAcceleration * score + InitialPlatformSpeed;

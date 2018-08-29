@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerScriptWithAnimator : MonoBehaviour {
     [Range(0.0f, 100.0f)] public float JumpForce = 50;
@@ -19,6 +20,7 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
     private Transform _parent;
     private Rigidbody _rb;
     private Animator _anim;
+    private Animator _parentAnim;
     private Animator _magnetismBarAnim;
     private Animator _destructionBarAnim;
     private List<GameObject> _coins;
@@ -27,6 +29,7 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
     public bool IsDestructive;
     public bool IsMagnetising;
     public bool IsFwdBoost;
+    public bool IsRespawning;
     private float _boostSpeed;
 
     // Use this for initialization
@@ -41,15 +44,17 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
             GameObject.Find("Player Animation Parent/Magnet Particle System")
                 .GetComponent<ParticleSystem>();
         _magnetismParticles.Stop(true);
-        _parent = transform.parent.transform;
+        _parent = gameObject.transform.parent.gameObject
+            .GetComponentInParent<Transform>();
         Score = 0.0f;
         _scoreText = GameObject.Find("ScoreCanvas/Score")
             .GetComponent<TextMeshProUGUI>();
         _highScoreText = GameObject.Find("ScoreCanvas/High Score")
             .GetComponent<TextMeshProUGUI>();
         _highScoreText.text = "BEST: " + PlayerPrefs.GetInt("highscore");
-        _rb = _parent.gameObject.GetComponent<Rigidbody>();
-        _anim = GetComponent<Animator>();
+        _rb = GetComponentInParent<Rigidbody>();
+        _anim = gameObject.GetComponent<Animator>();
+        _parentAnim = transform.parent.gameObject.GetComponent<Animator>();
         _magnetismBarAnim = GameObject.Find("Magnetism Bar Parent")
             .GetComponent<Animator>();
         _destructionBarAnim = GameObject.Find("Destruction Bar Parent")
@@ -60,6 +65,7 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
         IsBoosted = false;
         IsDestructive = false;
         IsMagnetising = false;
+        IsRespawning = false;
         IsFwdBoost = true;
         _boostSpeed = GameObject.Find("Power Up Manager")
             .GetComponent<PowerUpManager>().BoostSpeed;
@@ -72,7 +78,6 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
             ? "JumpAnimationWithDestruction"
             : "JumpAnimation");
         _isReleased = false;
-//        _rb.MovePosition(transform.position + transform.up * Time.deltaTime * JumpForce);
         _rb.velocity = new Vector3(_rb.velocity.x, JumpForce, 0);
     }
 
@@ -93,11 +98,6 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
             Pressed();
             return true;
         }
-
-//        var input = -Input.GetAxis("Horizontal");
-//        if (input < 0.01f && input > -0.01f) return false;
-//        _rb.velocity = new Vector3(0f, input * MovementSpeed, 0f);
-//        return true;
 
         if (!Input.GetKeyUp(KeyCode.Space)) return false;
         Released();
@@ -129,7 +129,7 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
     }
 
     private void GravityTweak() {
-        if (IsBoosted) {
+        if (IsBoosted || IsRespawning) {
             Physics.gravity = new Vector3(0.0f, 0.0f, 0.0f);
             return;
         }
@@ -155,12 +155,13 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
         _rb.AddForce(new Vector3(0.0f, 10.0f, 0.0f));
     }
 
+
     public void AddToScore(float amount, bool isTimeBonus) {
         Score += amount;
         _scoreText.text = ((int) Score).ToString();
         if (!isTimeBonus) {
             GameObject.Find("ScoreCanvas/Score").GetComponent<Animator>()
-                .Play("ScoreState");
+                .Play("ScoreAnimation");
         }
 
         if (Mathf.RoundToInt(Score) < PlayerPrefs.GetInt("highscore")) return;
@@ -197,6 +198,7 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
         _timer.ZeroDestruction();
         IsDestructive = false;
         _anim.Play("IdleDestructionEnd");
+        _parentAnim.Play("Idle");
         _destructionBarAnim.Play("Turn Off");
     }
 
@@ -216,7 +218,7 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
                 coin.transform.position,
                 gameObject.transform.position);
             var coinRb = coin.GetComponent<Rigidbody>();
-            if (coin.transform.position.x < -19 ||
+            if (coin.transform.position.x < -19.0f ||
                 distance > MaxMagnetismDistance) {
                 coinRb.isKinematic = true;
                 coinRb.useGravity = false;
@@ -235,12 +237,23 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
         }
     }
 
+    public void Respawn() {
+        _parent.position = new Vector3(0.0f, 1.5f, 0.0f);
+        _parentAnim.Play("PlayerParentRespawnAnimation");
+        _rb.isKinematic = true;
+    }
+
+    private void ApplyRespawn() {
+        _rb.isKinematic = false;
+    }
+
     // Update is called once per frame
     private void Update() {
         UpdateTimeScore();
         if (IsBoosted) ApplyBoost();
         if (IsDestructive) ApplyDestruction();
         if (IsMagnetising) ApplyMagnetism();
+        if (IsRespawning) ApplyRespawn();
         GravityTweak();
         GetInputAndApplyMovement();
     }

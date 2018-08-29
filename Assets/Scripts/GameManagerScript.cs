@@ -70,6 +70,7 @@ public class GameManagerScript : MonoBehaviour {
     }
 
     private Animator _livesLeftTextAnimator;
+    private Animator _livesLeftKyoobParentAnimator;
     private PowerUpManager _powerUpManager;
     public int LivesLeft;
     private TextMeshProUGUI _livesLeftText;
@@ -83,6 +84,8 @@ public class GameManagerScript : MonoBehaviour {
             .GetComponent<TextMeshProUGUI>();
         _livesLeftTextAnimator = GameObject.Find("ScoreCanvas/Lives Count")
             .GetComponent<Animator>();
+        _livesLeftKyoobParentAnimator = GameObject
+            .Find("Lives Count Kyoob Parent").GetComponent<Animator>();
         Timer = new GameTimer(_powerUpManager.BoostPowerUpDuration,
             _powerUpManager.DestructionPowerUpDuration,
             _powerUpManager.MagnetPowerUpDuration);
@@ -97,6 +100,7 @@ public class GameManagerScript : MonoBehaviour {
         }
         _livesLeftText.text = "X" + LivesLeft;
         _livesLeftTextAnimator.Play("LivesCountTextPickupAnimation");
+        _livesLeftKyoobParentAnimator.Play("LivesCountKyoobParentPickupAnimation");
     }
     
     public static void RestartLevel() {

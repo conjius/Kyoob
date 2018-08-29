@@ -7,6 +7,7 @@ public class PowerUpScript : MonoBehaviour {
     private PlayerScriptWithAnimator _playerScript;
     private PowerUpManager _powerUpManager;
     private Animator _anim;
+    private Animator _parentAnim;
     private Animator _destructionBarAnim;
     private Animator _magnetismBarAnim;
     private Collider _collider;
@@ -21,8 +22,10 @@ public class PowerUpScript : MonoBehaviour {
     // Use this for initialization
     private void Start() {
         _hasVibrator = Vibration.HasVibrator();
-        _player = GameObject.Find("Player");
+        _player = GameObject.Find("Player Animation Parent/Player");
         _anim = _player.GetComponent<Animator>();
+        _parentAnim =
+            _player.transform.parent.gameObject.GetComponent<Animator>();
         _destructionBarAnim = GameObject.Find("Destruction Bar Parent")
             .GetComponent<Animator>();
         _magnetismBarAnim = GameObject.Find("Magnetism Bar Parent")
@@ -36,8 +39,8 @@ public class PowerUpScript : MonoBehaviour {
         _magnetismParticles =
             GameObject.Find("Player Animation Parent/Magnet Particle System")
                 .GetComponent<ParticleSystem>();
-                _powerUps = GameObject.Find("Power Up Manager")
-                .GetComponent<PowerUpManager>().PowerUps;
+        _powerUps = GameObject.Find("Power Up Manager")
+            .GetComponent<PowerUpManager>().PowerUps;
         if (_powerUps == null) return;
         foreach (var powerup in _powerUps) {
             if (powerup._object == gameObject) _type = powerup._type;
@@ -64,6 +67,7 @@ public class PowerUpScript : MonoBehaviour {
             case PowerUpManager.PowerUp.Type.Destruction:
                 _playerScript.IsDestructive = true;
                 _anim.Play("IdleDestructionStart");
+                _parentAnim.Play("PlayerParentIdleAnimationWithDestruction");
                 _destructionBarAnim.Play("Turn On");
                 _timer.ZeroDestruction();
                 break;
