@@ -94,7 +94,7 @@ public class GameManagerScript : MonoBehaviour {
     public void LoseLife() {
         if (Vibration.HasVibrator()) Vibration.Vibrate(40);
         LivesLeft--;
-        if (LivesLeft < 0) {
+        if (LivesLeft < 1) {
             RestartLevel();
             return;
         }
