@@ -9,7 +9,6 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
     [Range(9.81f, 100.0f)] public float NormalGravity;
 
     [Range(9.81f, 500.0f)] public float FallGravity;
-
     public float Score;
     public float MaxMagnetismDistance;
     public float MagnetismForce;
@@ -131,11 +130,11 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
 
     private void GravityTweak() {
         if (IsBoosted) {
-            Physics.gravity = new Vector3(2.0f, 0.0f, 0.0f);
+            Physics.gravity = new Vector3(0.0f, 0.0f, 0.0f);
             return;
         }
 
-        Physics.gravity = _rb.velocity.y < -0.1
+        Physics.gravity = _rb.velocity.y < 0.1f
             ? new Vector3(0.0f, -FallGravity, 0.0f)
             : new Vector3(0.0f, -NormalGravity, 0.0f);
     }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManagerScript : MonoBehaviour {
@@ -68,22 +69,37 @@ public class GameManagerScript : MonoBehaviour {
         }
     }
 
+    private Animator _livesLeftTextAnimator;
     private PowerUpManager _powerUpManager;
-
+    public int LivesLeft;
+    private TextMeshProUGUI _livesLeftText;
     public GameTimer Timer;
 
     // Use this for initialization
     private void Start() {
         _powerUpManager = GameObject.Find("Power Up Manager")
             .GetComponent<PowerUpManager>();
+        _livesLeftText = GameObject.Find("ScoreCanvas/Lives Count")
+            .GetComponent<TextMeshProUGUI>();
+        _livesLeftTextAnimator = GameObject.Find("ScoreCanvas/Lives Count")
+            .GetComponent<Animator>();
         Timer = new GameTimer(_powerUpManager.BoostPowerUpDuration,
             _powerUpManager.DestructionPowerUpDuration,
             _powerUpManager.MagnetPowerUpDuration);
     }
 
-
+    public void LoseLife() {
+        if (Vibration.HasVibrator()) Vibration.Vibrate(40);
+        LivesLeft--;
+        if (LivesLeft < 0) {
+            RestartLevel();
+            return;
+        }
+        _livesLeftText.text = "X" + LivesLeft;
+        _livesLeftTextAnimator.Play("LivesCountTextPickupAnimation");
+    }
+    
     public static void RestartLevel() {
-        Vibration.Vibrate(20);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
