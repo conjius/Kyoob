@@ -17,6 +17,7 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
     private TextMeshProUGUI _highScoreText;
     private GameManagerScript.GameTimer _timer;
     private ParticleSystem _magnetismParticles;
+    private ParticleSystem _debrisParticles;
     private Transform _parent;
     private Rigidbody _rb;
     private Animator _anim;
@@ -44,6 +45,10 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
             GameObject.Find("Player Animation Parent/Magnet Particle System")
                 .GetComponent<ParticleSystem>();
         _magnetismParticles.Stop(true);
+        _debrisParticles =
+            GameObject.Find("Player Animation Parent/Debris Particle System")
+                .GetComponent<ParticleSystem>();
+        _debrisParticles.Stop(true);
         _parent = gameObject.transform.parent.gameObject
             .GetComponentInParent<Transform>();
         Score = 0.0f;
