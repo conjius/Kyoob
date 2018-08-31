@@ -65,6 +65,7 @@ public class PowerUpManager : MonoBehaviour {
     private float _minSpawnY;
     private float _maxSpawnY;
     private float _powerUpSpeed;
+    private GameManagerScript _gameManagerScript;
 
 
     // Use this for initialization
@@ -82,6 +83,8 @@ public class PowerUpManager : MonoBehaviour {
         _timeToNextSpawn = Random.Range(MinSpawnDelay, MaxSpawnDelay);
         _powerUpSpeed = _platformManager.PlatformSpeed;
         _distanceBetweenPlatforms = _platformManager.DistanceBetweenPlatforms;
+        _gameManagerScript = GameObject.Find("GrandDaddy/Menu/Game Manager")
+            .GetComponent<GameManagerScript>();
     }
 
     private static int RoundToMultipleOfN(int n, float input) {
@@ -155,6 +158,7 @@ public class PowerUpManager : MonoBehaviour {
 
     // Update is called once per frame
     private void Update() {
+        if (_gameManagerScript.IsPaused) return;
         MovePowerUps();
         _timer += Time.deltaTime;
         if (!(_timer >= _timeToNextSpawn)) return;

@@ -7,7 +7,7 @@ public class LoseLimitScript : MonoBehaviour {
     private PlayerScriptWithAnimator _playerScript;
 
     private void Start() {
-        _gameManager = GameObject.Find("Game Manager")
+        _gameManager = GameObject.Find("GrandDaddy/Menu/Game Manager")
             .GetComponent<GameManagerScript>();
         _playerScript = GameObject.Find("Player Animation Parent/Player")
             .GetComponent<PlayerScriptWithAnimator>();

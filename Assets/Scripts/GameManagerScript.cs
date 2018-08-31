@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using NUnit.Framework;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -69,12 +70,17 @@ public class GameManagerScript : MonoBehaviour {
         }
     }
 
-    private Animator _livesLeftTextAnimator;
-    private Animator _livesLeftKyoobParentAnimator;
+    private Renderer _instructions1;
+    private Renderer _instructions2;
+    private Animator _pauseMenuAnim;
+    private Animator _livesLeftTextAnim;
+    private Animator _livesLeftKyoobParentAnim;
     private PowerUpManager _powerUpManager;
     public int LivesLeft;
     private TextMeshProUGUI _livesLeftText;
     public GameTimer Timer;
+    public bool IsPaused;
+    private bool _isEscKeyReleased;
 
     // Use this for initialization
     private void Start() {
@@ -82,13 +88,19 @@ public class GameManagerScript : MonoBehaviour {
             .GetComponent<PowerUpManager>();
         _livesLeftText = GameObject.Find("ScoreCanvas/Lives Count")
             .GetComponent<TextMeshProUGUI>();
-        _livesLeftTextAnimator = GameObject.Find("ScoreCanvas/Lives Count")
+        _livesLeftTextAnim = GameObject.Find("ScoreCanvas/Lives Count")
             .GetComponent<Animator>();
-        _livesLeftKyoobParentAnimator = GameObject
+        _livesLeftKyoobParentAnim = GameObject
             .Find("Lives Count Kyoob Parent").GetComponent<Animator>();
+        _pauseMenuAnim = GameObject.Find("GrandDaddy").GetComponent<Animator>();
         Timer = new GameTimer(_powerUpManager.BoostPowerUpDuration,
             _powerUpManager.DestructionPowerUpDuration,
             _powerUpManager.MagnetPowerUpDuration);
+        _instructions1 =
+            GameObject.Find("instructions1").GetComponent<Renderer>();
+        _instructions2 =
+            GameObject.Find("instructions2").GetComponent<Renderer>();
+        _isEscKeyReleased = true;
     }
 
     public void LoseLife() {
@@ -98,12 +110,52 @@ public class GameManagerScript : MonoBehaviour {
             RestartLevel();
             return;
         }
+
         _livesLeftText.text = "X" + LivesLeft;
-        _livesLeftTextAnimator.Play("LivesCountTextPickupAnimation");
-        _livesLeftKyoobParentAnimator.Play("LivesCountKyoobParentPickupAnimation");
+        _livesLeftTextAnim.Play("LivesCountTextPickupAnimation");
+        _livesLeftKyoobParentAnim.Play("LivesCountKyoobParentPickupAnimation");
     }
-    
-    public static void RestartLevel() {
+
+    private static void RestartLevel() {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    private void ToggleInstructions() {
+        if (_instructions1 != null) {
+            _instructions1.enabled = !_instructions1.enabled;
+        }
+
+        if (_instructions2 != null)
+            _instructions2.enabled = !_instructions2.enabled;
+    }
+
+    private void Resume() {
+        ToggleInstructions();
+        _pauseMenuAnim.Play("ResumeAnimation");
+    }
+
+    private void Pause() {
+        _pauseMenuAnim.Play("PauseAnimation");
+        ToggleInstructions();
+    }
+
+    private void EscKeyPressed() {
+        if (!_isEscKeyReleased) return;
+        _isEscKeyReleased = false;
+        if (IsPaused) Resume();
+        else Pause();
+    }
+
+    private void EscKeyReleased() {
+        _isEscKeyReleased = true;
+    }
+
+    private void Update() {
+        if (Input.GetKey(KeyCode.Escape)) {
+            EscKeyPressed();
+        }
+        if (Input.GetKeyUp(KeyCode.Escape)) {
+            EscKeyReleased();
+        }
     }
 }

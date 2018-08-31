@@ -34,7 +34,7 @@ public class PowerUpScript : MonoBehaviour {
         _powerUpManager = GameObject.Find("Power Up Manager")
             .GetComponent<PowerUpManager>();
         _collider = GetComponent<Collider>();
-        _timer = GameObject.Find("Game Manager")
+        _timer = GameObject.Find("GrandDaddy/Menu/Game Manager")
             .GetComponent<GameManagerScript>().Timer;
         _magnetismParticles =
             GameObject.Find("Player Animation Parent/Magnet Particle System")

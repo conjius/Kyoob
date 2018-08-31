@@ -18,7 +18,7 @@ public class PlatformManagerScript : MonoBehaviour {
     public GameObject PlatformPrefab;
     public List<GameObject> Platforms;
 
-
+    private GameManagerScript _gameManagerScript;
     private float _timer;
     private float _timeBetweenSpawns = 0.3f;
 
@@ -29,6 +29,8 @@ public class PlatformManagerScript : MonoBehaviour {
 
     // Use this for initialization
     private void Start() {
+        _gameManagerScript = GameObject.Find("GrandDaddy/Menu/Game Manager")
+            .GetComponent<GameManagerScript>();
         _timer = 0.0f;
         _templatePlatform = GameObject.Find("Start Platform");
         var instructions1 = GameObject.Find("instructions1");
@@ -115,14 +117,15 @@ public class PlatformManagerScript : MonoBehaviour {
             }
         }
 
-        Platforms.RemoveAll(platform => platform.name != "Start Platform" &&
-                                        platform.name != "instructions1" &&
-                                        platform.name != "instructions2" &&
-                                        platform
-                                            .GetComponent<Animator>()
-                                            .GetCurrentAnimatorStateInfo(0)
-                                            .IsName(
-                                                "PlatformParentDestroyedAnimation"));
+        Platforms.RemoveAll(platform =>
+            platform != null && platform.name != "Start Platform" &&
+            platform.name != "instructions1" &&
+            platform.name != "instructions2" &&
+            platform
+                .GetComponent<Animator>()
+                .GetCurrentAnimatorStateInfo(0)
+                .IsName(
+                    "PlatformParentDestroyedAnimation"));
     }
 
     private void UpdatePlatformSpeed() {
@@ -136,6 +139,7 @@ public class PlatformManagerScript : MonoBehaviour {
 
     // Update is called once per frame
     public void Update() {
+        if (_gameManagerScript.IsPaused) return;
         UpdatePlatformSpeed();
         MovePlatforms();
         if (!IsTimeUp()) return;

@@ -12,7 +12,7 @@ public class PlatformScript : MonoBehaviour {
     private void Start() {
         _playerScript = GameObject.Find("Player Animation Parent/Player")
             .GetComponent<PlayerScriptWithAnimator>();
-        _gameManager = GameObject.Find("Game Manager")
+        _gameManager = GameObject.Find("GrandDaddy/Menu/Game Manager")
             .GetComponent<GameManagerScript>();
         _playerParentAnim = GameObject.Find("Player Animation Parent")
             .GetComponent<Animator>();

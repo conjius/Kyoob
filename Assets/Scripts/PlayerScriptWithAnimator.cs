@@ -15,6 +15,7 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
     public float MagnetismForce;
     private TextMeshProUGUI _scoreText;
     private TextMeshProUGUI _highScoreText;
+    private GameManagerScript _gameManagerScript;
     private GameManagerScript.GameTimer _timer;
     private ParticleSystem _magnetismParticles;
     private ParticleSystem _debrisParticles;
@@ -25,7 +26,7 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
     private Animator _magnetismBarAnim;
     private Animator _destructionBarAnim;
     private List<GameObject> _coins;
-    private bool _isReleased;
+    private bool _isJumpKeyReleased;
     public bool IsBoosted;
     public bool IsDestructive;
     public bool IsMagnetising;
@@ -39,8 +40,9 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
             PlayerPrefs.SetInt("highscore", 0);
         }
 
-        _timer = GameObject.Find("Game Manager")
-            .GetComponent<GameManagerScript>().Timer;
+        _gameManagerScript = GameObject.Find("GrandDaddy/Menu/Game Manager")
+            .GetComponent<GameManagerScript>();
+        _timer = _gameManagerScript.Timer;
         _magnetismParticles =
             GameObject.Find("Player Animation Parent/Magnet Particle System")
                 .GetComponent<ParticleSystem>();
@@ -66,7 +68,7 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
             .GetComponent<Animator>();
         _coins = GameObject.Find("Coin Manager").GetComponent<CoinManager>()
             .Coins;
-        _isReleased = true;
+        _isJumpKeyReleased = true;
         IsBoosted = false;
         IsDestructive = false;
         IsMagnetising = false;
@@ -77,35 +79,31 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
         GravityTweak();
     }
 
-    private void Pressed() {
-        if (!_isReleased) return;
+    private void JumpKeyPressed() {
+        if (!_isJumpKeyReleased) return;
         _anim.Play(IsDestructive
             ? "JumpAnimationWithDestruction"
             : "JumpAnimation");
-        _isReleased = false;
+        _isJumpKeyReleased = false;
         _rb.velocity = new Vector3(_rb.velocity.x, JumpForce, 0);
     }
 
-    private void Released() {
-        _isReleased = true;
+    private void JumpKeyReleased() {
+        _isJumpKeyReleased = true;
     }
 
     private bool GetKeyboardInput() {
-        if (Input.GetKey(KeyCode.Escape)) {
-            GameManagerScript.RestartLevel();
-        }
-
         if (Input.GetKey(KeyCode.Return)) {
             PlayerPrefs.SetInt("highscore", 0);
         }
 
         if (Input.GetKey(KeyCode.Space)) {
-            Pressed();
+            JumpKeyPressed();
             return true;
         }
 
         if (!Input.GetKeyUp(KeyCode.Space)) return false;
-        Released();
+        JumpKeyReleased();
         return true;
     }
 
@@ -116,11 +114,11 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
             case TouchPhase.Moved:
             case TouchPhase.Stationary:
             case TouchPhase.Began:
-                Pressed();
+                JumpKeyPressed();
                 break;
             case TouchPhase.Canceled:
             case TouchPhase.Ended:
-                Released();
+                JumpKeyReleased();
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
@@ -254,6 +252,9 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
 
     // Update is called once per frame
     private void Update() {
+        if (_gameManagerScript.IsPaused) {
+            return;
+        }
         UpdateTimeScore();
         if (IsBoosted) ApplyBoost();
         if (IsDestructive) ApplyDestruction();

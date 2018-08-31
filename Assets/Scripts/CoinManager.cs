@@ -15,6 +15,7 @@ public class CoinManager : MonoBehaviour {
     private float _maxSpawnY;
     private float _coinSpeed;
     private int _distanceBetweenPlatforms;
+    private GameManagerScript _gameManagerScript;
 
 
     // Use this for initialization
@@ -30,6 +31,8 @@ public class CoinManager : MonoBehaviour {
         _timeToNextSpawn = Random.Range(MinSpawnDelay, MaxSpawnDelay);
         _coinSpeed = _platformManager.PlatformSpeed;
         _distanceBetweenPlatforms = _platformManager.DistanceBetweenPlatforms;
+        _gameManagerScript = GameObject.Find("GrandDaddy/Menu/Game Manager")
+            .GetComponent<GameManagerScript>();
     }
 
     private static int RoundToMultipleOfN(int n, float input) {
@@ -66,6 +69,7 @@ public class CoinManager : MonoBehaviour {
 
     // Update is called once per frame
     private void Update() {
+        if (_gameManagerScript.IsPaused) return;
         MoveCoins();
         _timer += Time.deltaTime;
         if (!(_timer >= _timeToNextSpawn)) return;

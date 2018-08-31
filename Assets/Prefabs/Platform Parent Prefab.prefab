@@ -66,7 +66,7 @@ ParticleSystem:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1373820501359120}
   serializedVersion: 5
-  lengthInSec: 0.2
+  lengthInSec: 0.4
   simulationSpeed: 1
   looping: 0
   prewarm: 0
@@ -2251,9 +2251,9 @@ ParticleSystem:
         m_NumAlphaKeys: 2
     range: {x: 0, y: 1}
   CollisionModule:
-    enabled: 0
+    enabled: 1
     serializedVersion: 3
-    type: 0
+    type: 1
     collisionMode: 0
     plane0: {fileID: 0}
     plane1: {fileID: 0}
@@ -2305,7 +2305,7 @@ ParticleSystem:
     m_Bounce:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0.5
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -3199,7 +3199,7 @@ ParticleSystemRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_Materials:
-  - {fileID: 2100000, guid: 13674605f167fc94e98541edcf5793d5, type: 2}
+  - {fileID: 2100000, guid: c491d1ff9fe00d241804dc74c545d762, type: 2}
   - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0

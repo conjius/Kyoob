@@ -22,7 +22,7 @@ public class BarManager : MonoBehaviour {
             .GetComponent<Transform>();
         _playerScript = GameObject.Find("Player Animation Parent/Player")
             .GetComponent<PlayerScriptWithAnimator>();
-        _gameManagerScript = GameObject.Find("Game Manager")
+        _gameManagerScript = GameObject.Find("GrandDaddy/Menu/Game Manager")
             .GetComponent<GameManagerScript>();
     }
 
