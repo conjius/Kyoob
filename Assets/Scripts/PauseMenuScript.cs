@@ -1,16 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PauseMenuScript : MonoBehaviour {
     public Collider ResumeCollider;
     public Collider RestartCollider;
-    private Animator _mainMenuAnim;
+    private GameManagerScript _gameManagerScript;
 
     // Use this for initialization
     private void Start() {
-        _mainMenuAnim = gameObject.GetComponent<Animator>();
+        _gameManagerScript = GameObject.Find("GrandDaddy/Menu Parent/Menu/Game Manager")
+            .GetComponent<GameManagerScript>();
     }
 
     // Update is called once per frame
@@ -20,7 +19,7 @@ public class PauseMenuScript : MonoBehaviour {
         RaycastHit hit;
         if (!Physics.Raycast(ray, out hit)) return;
         if (hit.collider == ResumeCollider) {
-            _mainMenuAnim.Play("ResumeAnimation");
+            _gameManagerScript.Resume();
             return;
         }
 

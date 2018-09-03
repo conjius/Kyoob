@@ -14,6 +14,7 @@ public class PlatformManagerScript : MonoBehaviour {
     public float PlatformSpeed = 5.0f;
     public float MaxSpawnY;
     public float MinSpawnY;
+    public GameObject PlatformDebrisSystemPrefab;
     public GameObject ParentPlatformPrefab;
     public GameObject PlatformPrefab;
     public List<GameObject> Platforms;
@@ -29,7 +30,8 @@ public class PlatformManagerScript : MonoBehaviour {
 
     // Use this for initialization
     private void Start() {
-        _gameManagerScript = GameObject.Find("GrandDaddy/Menu/Game Manager")
+        _gameManagerScript = GameObject
+            .Find("GrandDaddy/Menu Parent/Menu/Game Manager")
             .GetComponent<GameManagerScript>();
         _timer = 0.0f;
         _templatePlatform = GameObject.Find("Start Platform");
@@ -73,11 +75,17 @@ public class PlatformManagerScript : MonoBehaviour {
         var newPlatformY =
             RoundToMultipleOfN(DistanceBetweenPlatforms,
                 Random.Range(MinSpawnY, MaxSpawnY));
+        var newPlatformDebrisSystem = Instantiate(PlatformDebrisSystemPrefab,
+            new Vector3(
+                SpawnPosX, newPlatformY, 0f), Quaternion.identity);
         var newParentPlatform = Instantiate(ParentPlatformPrefab, new Vector3(
-            SpawnPosX, newPlatformY, 0f), Quaternion.identity);
+                SpawnPosX, newPlatformY, 0f),
+            Quaternion.identity,
+            newPlatformDebrisSystem.transform);
         var newPlatform = Instantiate(PlatformPrefab, new Vector3(
-                SpawnPosX, newPlatformY, 0f), Quaternion.identity,
-            newParentPlatform.transform);
+                SpawnPosX, newPlatformY, 0f),
+            Quaternion.identity, newParentPlatform.transform);
+        newPlatformDebrisSystem.tag = "Platform";
         newPlatform.tag = "Platform";
         newParentPlatform.tag = "Platform";
         _lastSpawnedSize = Mathf.RoundToInt(Random.Range(MinPlatformSize,
@@ -85,29 +93,29 @@ public class PlatformManagerScript : MonoBehaviour {
         newPlatform.transform.localScale = new Vector3(
             _lastSpawnedSize, newParentPlatform.transform.lossyScale.y,
             newParentPlatform.transform.lossyScale.z);
-        Platforms.Add(newParentPlatform);
+        Platforms.Add(newPlatformDebrisSystem);
         TweakSpawnTime();
     }
 
     private void MovePlatforms() {
         foreach (var platform in Platforms) {
             if (platform == null) continue;
-            if (platform.name != "Start Platform" &&
-                platform.name != "instructions1" &&
-                platform.name != "instructions2" &&
-                platform
-                    .GetComponent<Animator>()
-                    .GetCurrentAnimatorStateInfo(0)
-                    .IsName(
-                        "PlatformParentDestroyedAnimation")) {
-                Destroy(platform.transform.GetChild(0).gameObject);
-                Destroy(platform);
-                continue;
-            }
+//            if (platform.name != "Start Platform" &&
+//                platform.name != "instructions1" &&
+//                platform.name != "instructions2" &&
+//                platform
+//                    .GetComponent<Animator>()
+//                    .GetCurrentAnimatorStateInfo(0)
+//                    .IsName(
+//                        "PlatformParentDestroyedAnimation")) {
+//                Destroy(platform.transform.GetChild(0).gameObject);
+//                Destroy(platform);
+//                continue;
+//            }
 
             if (platform.CompareTag("Instructions")) {
                 platform.transform.Translate(
-                    Vector3.left * 2.0f * PlatformSpeed * Time.deltaTime);
+                    Vector3.left * 1.5f * PlatformSpeed * Time.deltaTime);
             }
             else {
                 platform.transform.position -=
@@ -117,21 +125,18 @@ public class PlatformManagerScript : MonoBehaviour {
             }
         }
 
-        Platforms.RemoveAll(platform =>
-            platform != null && platform.name != "Start Platform" &&
-            platform.name != "instructions1" &&
-            platform.name != "instructions2" &&
-            platform
-                .GetComponent<Animator>()
-                .GetCurrentAnimatorStateInfo(0)
-                .IsName(
-                    "PlatformParentDestroyedAnimation"));
+//        Platforms.RemoveAll(platform =>
+//            platform != null && platform.name != "Start Platform" &&
+//            platform.name != "instructions1" &&
+//            platform.name != "instructions2" &&
+//            platform.GetComponentInChildren<PlatformScript>().IsDestroyed);
     }
 
     private void UpdatePlatformSpeed() {
         // platform speed increases linearly with score. +1 speed for every
         // 1/PlatformSpeedAcceleration points
-        var score = GameObject.Find("Player Animation Parent/Player")
+        var score = GameObject
+            .Find("Player Animation Parent/Boost Stretcher/Player")
             .GetComponent<PlayerScriptWithAnimator>().Score;
         PlatformSpeed =
             PlatformSpeedAcceleration * score + InitialPlatformSpeed;

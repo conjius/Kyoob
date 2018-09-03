@@ -8,11 +8,12 @@ public class PlatformScript : MonoBehaviour {
     private ParticleSystem _playerDebrisParticleSystem;
     private ParticleSystem _platformDebrisParticleSystem;
     private GameManagerScript _gameManager;
+    public bool IsDestroyed;
 
     private void Start() {
-        _playerScript = GameObject.Find("Player Animation Parent/Player")
+        _playerScript = GameObject.Find("Player Animation Parent/Boost Stretcher/Player")
             .GetComponent<PlayerScriptWithAnimator>();
-        _gameManager = GameObject.Find("GrandDaddy/Menu/Game Manager")
+        _gameManager = GameObject.Find("GrandDaddy/Menu Parent/Menu/Game Manager")
             .GetComponent<GameManagerScript>();
         _playerParentAnim = GameObject.Find("Player Animation Parent")
             .GetComponent<Animator>();
@@ -20,12 +21,13 @@ public class PlatformScript : MonoBehaviour {
             .Find("Player Animation Parent/Debris Particle System")
             .GetComponent<ParticleSystem>();
         _platformDebrisParticleSystem =
-            gameObject.transform.parent.gameObject
+            gameObject.transform.parent.transform.parent.gameObject
                 .GetComponent<ParticleSystem>();
+        IsDestroyed = false;
     }
 
     private void OnTriggerEnter(Collider other) {
-        if (other.name != "Player") return;
+        if (other.name != "Player" || IsDestroyed) return;
         _platformDebrisParticleSystem.Play(true);
         gameObject.transform.parent.gameObject.GetComponent<Animator>()
             .Play("PlatformParentDestroyAnimation");
@@ -36,8 +38,9 @@ public class PlatformScript : MonoBehaviour {
             _playerParentAnim.Play("PlayerParentHitAnimation");
         }
 
-        var components = gameObject.GetComponents<Collider>();
-        Destroy(components[0]);
-        Destroy(components[1]);
+//        var components = gameObject.GetComponents<Collider>();
+//        Destroy(components[0]);
+//        Destroy(components[1]);
+        IsDestroyed = true;
     }
 }

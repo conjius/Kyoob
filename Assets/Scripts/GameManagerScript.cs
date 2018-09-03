@@ -1,5 +1,4 @@
-﻿using NUnit.Framework;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -129,7 +128,7 @@ public class GameManagerScript : MonoBehaviour {
             _instructions2.enabled = !_instructions2.enabled;
     }
 
-    private void Resume() {
+    public void Resume() {
         ToggleInstructions();
         _pauseMenuAnim.Play("ResumeAnimation");
     }

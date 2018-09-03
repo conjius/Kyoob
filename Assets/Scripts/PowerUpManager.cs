@@ -83,7 +83,7 @@ public class PowerUpManager : MonoBehaviour {
         _timeToNextSpawn = Random.Range(MinSpawnDelay, MaxSpawnDelay);
         _powerUpSpeed = _platformManager.PlatformSpeed;
         _distanceBetweenPlatforms = _platformManager.DistanceBetweenPlatforms;
-        _gameManagerScript = GameObject.Find("GrandDaddy/Menu/Game Manager")
+        _gameManagerScript = GameObject.Find("GrandDaddy/Menu Parent/Menu/Game Manager")
             .GetComponent<GameManagerScript>();
     }
 

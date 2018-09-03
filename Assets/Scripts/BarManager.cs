@@ -20,9 +20,9 @@ public class BarManager : MonoBehaviour {
         _magnetismBarTransform = GameObject
             .Find("Magnetism Bar Parent/Magnetism Bar")
             .GetComponent<Transform>();
-        _playerScript = GameObject.Find("Player Animation Parent/Player")
+        _playerScript = GameObject.Find("Player Animation Parent/Boost Stretcher/Player")
             .GetComponent<PlayerScriptWithAnimator>();
-        _gameManagerScript = GameObject.Find("GrandDaddy/Menu/Game Manager")
+        _gameManagerScript = GameObject.Find("GrandDaddy/Menu Parent/Menu/Game Manager")
             .GetComponent<GameManagerScript>();
     }
 

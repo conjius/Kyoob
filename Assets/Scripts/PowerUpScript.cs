@@ -22,10 +22,12 @@ public class PowerUpScript : MonoBehaviour {
     // Use this for initialization
     private void Start() {
         _hasVibrator = Vibration.HasVibrator();
-        _player = GameObject.Find("Player Animation Parent/Player");
+        _player =
+            GameObject.Find("Player Animation Parent/Boost Stretcher/Player");
         _anim = _player.GetComponent<Animator>();
         _parentAnim =
-            _player.transform.parent.gameObject.GetComponent<Animator>();
+            GameObject.Find("Player Animation Parent/Boost Stretcher").transform
+                .parent.gameObject.GetComponent<Animator>();
         _destructionBarAnim = GameObject.Find("Destruction Bar Parent")
             .GetComponent<Animator>();
         _magnetismBarAnim = GameObject.Find("Magnetism Bar Parent")
@@ -34,7 +36,7 @@ public class PowerUpScript : MonoBehaviour {
         _powerUpManager = GameObject.Find("Power Up Manager")
             .GetComponent<PowerUpManager>();
         _collider = GetComponent<Collider>();
-        _timer = GameObject.Find("GrandDaddy/Menu/Game Manager")
+        _timer = GameObject.Find("GrandDaddy/Menu Parent/Menu/Game Manager")
             .GetComponent<GameManagerScript>().Timer;
         _magnetismParticles =
             GameObject.Find("Player Animation Parent/Magnet Particle System")

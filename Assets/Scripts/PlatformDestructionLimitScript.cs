@@ -27,12 +27,15 @@ public class PlatformDestructionLimitScript : MonoBehaviour {
                     if (_powerUps[i]._object.GetComponent<Collider>() == other)
                         _powerUps.RemoveAt(i);
                 }
+                Destroy(other.gameObject);
                 break;
             case "Platform":
                 _platforms.Remove(other.gameObject);
+                Destroy(other.gameObject.transform.parent.gameObject);
                 break;
             case "Coin":
                 _coins.Remove(other.gameObject);
+                Destroy(other.gameObject);
                 break;
             case "Instructions": break;
         }

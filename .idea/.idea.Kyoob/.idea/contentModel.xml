@@ -8,7 +8,6 @@
     <e p="C:\Users\dais\.Rider2018.2\system\resharper-host\Local\Transient\ReSharperHost\v182\SolutionCaches\_Kyoob.1377699802.00" t="ExcludeRecursive" />
     <e p="D:\Unity3d\Projects\Kyoob" t="IncludeRecursive">
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
-      <e p="Assets\PauseMenuScript.cs" t="Include" />
       <e p="Assets\Plugins" t="Include">
         <e p="Android" t="Include">
           <e p="AndroidManifest.xml" t="Include" />
@@ -21,6 +20,7 @@
         <e p="GameManagerScript.cs" t="Include" />
         <e p="LoseLimitScript.cs" t="Include" />
         <e p="MainMenuScript.cs" t="Include" />
+        <e p="PauseMenuScript.cs" t="Include" />
         <e p="PlatformDestructionLimitScript.cs" t="Include" />
         <e p="PlatformManagerScript.cs" t="Include" />
         <e p="PlatformScript.cs" t="Include" />

@@ -31,7 +31,7 @@ public class CoinManager : MonoBehaviour {
         _timeToNextSpawn = Random.Range(MinSpawnDelay, MaxSpawnDelay);
         _coinSpeed = _platformManager.PlatformSpeed;
         _distanceBetweenPlatforms = _platformManager.DistanceBetweenPlatforms;
-        _gameManagerScript = GameObject.Find("GrandDaddy/Menu/Game Manager")
+        _gameManagerScript = GameObject.Find("GrandDaddy/Menu Parent/Menu/Game Manager")
             .GetComponent<GameManagerScript>();
     }
 

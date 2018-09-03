@@ -20,7 +20,7 @@ public class CoinScript : MonoBehaviour {
     private void OnTriggerEnter(Collider other) {
         if (!other.gameObject.CompareTag("Player")) return;
         if (_hasVibrator) Vibration.Vibrate(10);
-        GameObject.Find("Player Animation Parent/Player")
+        GameObject.Find("Player Animation Parent/Boost Stretcher/Player")
             .GetComponent<PlayerScriptWithAnimator>()
             .AddToScore(10f, false);
         for (var i = _coins.Count - 1; i >= 0; i--) {

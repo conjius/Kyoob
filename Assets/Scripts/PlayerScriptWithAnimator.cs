@@ -22,12 +22,14 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
     private Transform _parent;
     private Rigidbody _rb;
     private Animator _anim;
+    private Animator _boostAnim;
     private Animator _parentAnim;
     private Animator _magnetismBarAnim;
     private Animator _destructionBarAnim;
     private List<GameObject> _coins;
     private bool _isJumpKeyReleased;
     public bool IsBoosted;
+    public bool IsFirstFrameOfBoost;
     public bool IsDestructive;
     public bool IsMagnetising;
     public bool IsFwdBoost;
@@ -40,7 +42,7 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
             PlayerPrefs.SetInt("highscore", 0);
         }
 
-        _gameManagerScript = GameObject.Find("GrandDaddy/Menu/Game Manager")
+        _gameManagerScript = GameObject.Find("GrandDaddy/Menu Parent/Menu/Game Manager")
             .GetComponent<GameManagerScript>();
         _timer = _gameManagerScript.Timer;
         _magnetismParticles =
@@ -59,9 +61,10 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
         _highScoreText = GameObject.Find("ScoreCanvas/High Score")
             .GetComponent<TextMeshProUGUI>();
         _highScoreText.text = "BEST: " + PlayerPrefs.GetInt("highscore");
-        _rb = GetComponentInParent<Rigidbody>();
+        _rb = _parent.gameObject.GetComponentInParent<Rigidbody>();
         _anim = gameObject.GetComponent<Animator>();
-        _parentAnim = transform.parent.gameObject.GetComponent<Animator>();
+        _boostAnim = GameObject.Find("Boost Stretcher").GetComponent<Animator>();
+        _parentAnim = _parent.transform.parent.gameObject.GetComponent<Animator>();
         _magnetismBarAnim = GameObject.Find("Magnetism Bar Parent")
             .GetComponent<Animator>();
         _destructionBarAnim = GameObject.Find("Destruction Bar Parent")
@@ -70,6 +73,7 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
             .Coins;
         _isJumpKeyReleased = true;
         IsBoosted = false;
+        IsFirstFrameOfBoost = true;
         IsDestructive = false;
         IsMagnetising = false;
         IsRespawning = false;
@@ -143,19 +147,29 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
     }
 
     private void BoostFwd() {
-        _parent.transform.localScale = new Vector3(2.0f, 0.9f, 1.0f);
+//        _parent.transform.localScale = new Vector3(2.0f, 0.9f, 1.0f);
+        if (IsFirstFrameOfBoost) {
+            IsFirstFrameOfBoost = false;
+            _boostAnim.Play("BoostAnimation");
+        }
         _rb.velocity = new Vector3(_boostSpeed, 0.0f, 0.0f);
     }
 
     private void BoostBack() {
-        _parent.transform.localScale = new Vector3(2.0f, 0.9f, 1.0f);
-        _rb.velocity = new Vector3(-1.0f * _boostSpeed, 0.0f, 0.0f);
+//        _parent.transform.localScale = new Vector3(2.0f, 0.9f, 1.0f);
+        if (IsFirstFrameOfBoost) {
+            IsFirstFrameOfBoost = false;
+            _boostAnim.Play("BoostAnimation");
+        }
+        _rb.velocity = new Vector3(-_boostSpeed, 0.0f, 0.0f);
     }
 
     private void Unboost() {
-        _parent.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-        _rb.velocity = new Vector3(0.0f, 0.0f, 0.0f);
-        _rb.AddForce(new Vector3(0.0f, 10.0f, 0.0f));
+//        _parent.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+        _boostAnim.Play("UnboostAnimation");
+        IsFirstFrameOfBoost = true;
+        _rb.velocity = new Vector3(0.0f, 5.0f, 0.0f);
+//        _rb.AddForce(new Vector3(0.0f, 10.0f, 0.0f));
     }
 
 
@@ -241,14 +255,10 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
     }
 
     public void Respawn() {
-        _parent.position = new Vector3(0.0f, 1.5f, 0.0f);
+        _parent.transform.parent.position = new Vector3(0.0f, 1.5f, 0.0f);
         _parentAnim.Play("PlayerParentRespawnAnimation");
-        _rb.isKinematic = true;
     }
 
-    private void ApplyRespawn() {
-        _rb.isKinematic = false;
-    }
 
     // Update is called once per frame
     private void Update() {
@@ -259,7 +269,6 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
         if (IsBoosted) ApplyBoost();
         if (IsDestructive) ApplyDestruction();
         if (IsMagnetising) ApplyMagnetism();
-        if (IsRespawning) ApplyRespawn();
         GravityTweak();
         GetInputAndApplyMovement();
     }

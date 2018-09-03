@@ -44,31 +44,9 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: Menu
+    path: Menu Parent/Menu
   m_ScaleCurves: []
   m_FloatCurves:
-  - curve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 2
-        time: 0
-        value: 1
-        inSlope: Infinity
-        outSlope: Infinity
-        tangentMode: 103
-      - serializedVersion: 2
-        time: 0.5833333
-        value: 1
-        inSlope: Infinity
-        outSlope: Infinity
-        tangentMode: 103
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: IsPaused
-    path: Menu/Game Manager
-    classID: 114
-    script: {fileID: 11500000, guid: 8654068c80b15b64d8a459315595244d, type: 3}
   - curve:
       serializedVersion: 2
       m_Curve:
@@ -91,6 +69,50 @@ AnimationClip:
     path: Player Animation Parent
     classID: 54
     script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 1
+        inSlope: Infinity
+        outSlope: Infinity
+        tangentMode: 103
+      - serializedVersion: 2
+        time: 0.5833333
+        value: 1
+        inSlope: Infinity
+        outSlope: Infinity
+        tangentMode: 103
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: IsPaused
+    path: Menu Parent/Menu/Game Manager
+    classID: 114
+    script: {fileID: 11500000, guid: 8654068c80b15b64d8a459315595244d, type: 3}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 1
+        inSlope: Infinity
+        outSlope: Infinity
+        tangentMode: 103
+      - serializedVersion: 2
+        time: 0.5833333
+        value: 1
+        inSlope: Infinity
+        outSlope: Infinity
+        tangentMode: 103
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_IsActive
+    path: Menu Parent/Menu/Menu Elements
+    classID: 1
+    script: {fileID: 0}
   m_PPtrCurves: []
   m_SampleRate: 60
   m_WrapMode: 0
@@ -100,17 +122,10 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 3711407533
+      path: 3062347701
       attribute: 1
       script: {fileID: 0}
       typeID: 4
-      customType: 0
-      isPPtrCurve: 0
-    - serializedVersion: 2
-      path: 642745365
-      attribute: 2125407767
-      script: {fileID: 11500000, guid: 8654068c80b15b64d8a459315595244d, type: 3}
-      typeID: 114
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
@@ -118,6 +133,20 @@ AnimationClip:
       attribute: 2041097263
       script: {fileID: 0}
       typeID: 54
+      customType: 0
+      isPPtrCurve: 0
+    - serializedVersion: 2
+      path: 1254962625
+      attribute: 2125407767
+      script: {fileID: 11500000, guid: 8654068c80b15b64d8a459315595244d, type: 3}
+      typeID: 114
+      customType: 0
+      isPPtrCurve: 0
+    - serializedVersion: 2
+      path: 2637278707
+      attribute: 2086281974
+      script: {fileID: 0}
+      typeID: 1
       customType: 0
       isPPtrCurve: 0
     pptrCurveMapping: []
@@ -142,6 +171,28 @@ AnimationClip:
     m_HeightFromFeet: 0
     m_Mirror: 0
   m_EditorCurves:
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 1
+        inSlope: Infinity
+        outSlope: Infinity
+        tangentMode: 103
+      - serializedVersion: 2
+        time: 0.5833333
+        value: 1
+        inSlope: Infinity
+        outSlope: Infinity
+        tangentMode: 103
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_IsKinematic
+    path: Player Animation Parent
+    classID: 54
+    script: {fileID: 0}
   - curve:
       serializedVersion: 2
       m_Curve:
@@ -173,7 +224,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.x
-    path: Menu
+    path: Menu Parent/Menu
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -207,7 +258,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.y
-    path: Menu
+    path: Menu Parent/Menu
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -241,7 +292,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.z
-    path: Menu
+    path: Menu Parent/Menu
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -263,7 +314,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: IsPaused
-    path: Menu/Game Manager
+    path: Menu Parent/Menu/Game Manager
     classID: 114
     script: {fileID: 11500000, guid: 8654068c80b15b64d8a459315595244d, type: 3}
   - curve:
@@ -284,9 +335,9 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_IsKinematic
-    path: Player Animation Parent
-    classID: 54
+    attribute: m_IsActive
+    path: Menu Parent/Menu/Menu Elements
+    classID: 1
     script: {fileID: 0}
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
