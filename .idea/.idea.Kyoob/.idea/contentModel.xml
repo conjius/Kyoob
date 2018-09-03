@@ -15,6 +15,7 @@
       </e>
       <e p="Assets\Scripts" t="Include">
         <e p="BarManager.cs" t="Include" />
+        <e p="CameraShake.cs" t="Include" />
         <e p="CoinManager.cs" t="Include" />
         <e p="CoinScript.cs" t="Include" />
         <e p="GameManagerScript.cs" t="Include" />

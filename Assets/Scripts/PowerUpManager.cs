@@ -10,7 +10,8 @@ public class PowerUpManager : MonoBehaviour {
             BoostFwd,
             BoostBack,
             Destruction,
-            Magnet
+            Magnet,
+            Projectiles
         }
 
         public Type _type;
@@ -26,7 +27,7 @@ public class PowerUpManager : MonoBehaviour {
         }
 
         public static Type RandomType() {
-            var rand = Random.Range(0, 4);
+            var rand = Random.Range(0, 5);
             switch (rand) {
                 case 0:
                     return Type.BoostBack;
@@ -36,6 +37,8 @@ public class PowerUpManager : MonoBehaviour {
                     return Type.Destruction;
                 case 3:
                     return Type.Magnet;
+                case 4:
+                    return Type.Projectiles;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -46,10 +49,12 @@ public class PowerUpManager : MonoBehaviour {
     public float BoostPowerUpDuration;
     public float DestructionPowerUpDuration;
     public float MagnetPowerUpDuration;
+    public float ProjectilesPowerUpDuration;
     public Color BoostFwdColor;
     public Color BoostBackColor;
     public Color DestructionColor;
     public Color MagnetColor;
+    public Color ProjectilesColor;
     private int _distanceBetweenPlatforms;
     private PlatformManagerScript _platformManager;
     public GameObject PowerUpPrefab;
@@ -99,6 +104,7 @@ public class PowerUpManager : MonoBehaviour {
             case PowerUp.Type.BoostBack: return BoostBackColor;
             case PowerUp.Type.Destruction: return DestructionColor;
             case PowerUp.Type.Magnet: return MagnetColor;
+            case PowerUp.Type.Projectiles: return ProjectilesColor;
             default:
                 throw new ArgumentOutOfRangeException("type", type, null);
         }
@@ -110,6 +116,7 @@ public class PowerUpManager : MonoBehaviour {
             case PowerUp.Type.BoostFwd: return BoostPowerUpDuration;
             case PowerUp.Type.Destruction: return DestructionPowerUpDuration;
             case PowerUp.Type.Magnet: return MagnetPowerUpDuration;
+            case PowerUp.Type.Projectiles: return ProjectilesPowerUpDuration;
 
             default:
                 throw new ArgumentOutOfRangeException("type", type, null);
@@ -151,7 +158,6 @@ public class PowerUpManager : MonoBehaviour {
         foreach (var coin in _coins) {
             if (coin == null) continue;
             var coinRb = coin.GetComponent<Rigidbody>();
-//            coinRb.isKinematic = true;
             coinRb.useGravity = false;
         }
     }

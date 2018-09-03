@@ -15,9 +15,11 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
     public float MagnetismForce;
     private TextMeshProUGUI _scoreText;
     private TextMeshProUGUI _highScoreText;
+    private TextMeshProUGUI _lastScoreText;
     private GameManagerScript _gameManagerScript;
     private GameManagerScript.GameTimer _timer;
     private ParticleSystem _magnetismParticles;
+    private ParticleSystem _projectilesParticles;
     private ParticleSystem _debrisParticles;
     private Transform _parent;
     private Rigidbody _rb;
@@ -26,12 +28,14 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
     private Animator _parentAnim;
     private Animator _magnetismBarAnim;
     private Animator _destructionBarAnim;
+    private Animator _projectilesBarAnim;
     private List<GameObject> _coins;
     private bool _isJumpKeyReleased;
     public bool IsBoosted;
     public bool IsFirstFrameOfBoost;
     public bool IsDestructive;
     public bool IsMagnetising;
+    public bool IsProjectiles;
     public bool IsFwdBoost;
     public bool IsRespawning;
     private float _boostSpeed;
@@ -41,14 +45,18 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
         if (!PlayerPrefs.HasKey("highscore")) {
             PlayerPrefs.SetInt("highscore", 0);
         }
-
-        _gameManagerScript = GameObject.Find("GrandDaddy/Menu Parent/Menu/Game Manager")
+        _gameManagerScript = GameObject
+            .Find("GrandDaddy/Menu Parent/Menu/Game Manager")
             .GetComponent<GameManagerScript>();
         _timer = _gameManagerScript.Timer;
         _magnetismParticles =
             GameObject.Find("Player Animation Parent/Magnet Particle System")
                 .GetComponent<ParticleSystem>();
+        _projectilesParticles = GameObject.Find(
+                "Projectiles Particle System")
+            .GetComponent<ParticleSystem>();
         _magnetismParticles.Stop(true);
+        _projectilesParticles.Stop(true);
         _debrisParticles =
             GameObject.Find("Player Animation Parent/Debris Particle System")
                 .GetComponent<ParticleSystem>();
@@ -60,14 +68,26 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
             .GetComponent<TextMeshProUGUI>();
         _highScoreText = GameObject.Find("ScoreCanvas/High Score")
             .GetComponent<TextMeshProUGUI>();
+        _lastScoreText = GameObject.Find("ScoreCanvas/Last Score")
+            .GetComponent<TextMeshProUGUI>();
+        if (!PlayerPrefs.HasKey("lastScore")) {
+            GameObject.Find("ScoreCanvas/Last Score").GetComponent<Animator>()
+                .Play("NoLastScoreAnimation");
+            PlayerPrefs.SetInt("lastScore", 0);
+        }
         _highScoreText.text = "BEST: " + PlayerPrefs.GetInt("highscore");
+        _lastScoreText.text = "LAST: " + PlayerPrefs.GetInt("lastScore");
         _rb = _parent.gameObject.GetComponentInParent<Rigidbody>();
         _anim = gameObject.GetComponent<Animator>();
-        _boostAnim = GameObject.Find("Boost Stretcher").GetComponent<Animator>();
-        _parentAnim = _parent.transform.parent.gameObject.GetComponent<Animator>();
+        _boostAnim = GameObject.Find("Boost Stretcher")
+            .GetComponent<Animator>();
+        _parentAnim =
+            _parent.transform.parent.gameObject.GetComponent<Animator>();
         _magnetismBarAnim = GameObject.Find("Magnetism Bar Parent")
             .GetComponent<Animator>();
         _destructionBarAnim = GameObject.Find("Destruction Bar Parent")
+            .GetComponent<Animator>();
+        _projectilesBarAnim = GameObject.Find("Projectiles Bar Parent")
             .GetComponent<Animator>();
         _coins = GameObject.Find("Coin Manager").GetComponent<CoinManager>()
             .Coins;
@@ -76,6 +96,7 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
         IsFirstFrameOfBoost = true;
         IsDestructive = false;
         IsMagnetising = false;
+        IsProjectiles = false;
         IsRespawning = false;
         IsFwdBoost = true;
         _boostSpeed = GameObject.Find("Power Up Manager")
@@ -152,6 +173,7 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
             IsFirstFrameOfBoost = false;
             _boostAnim.Play("BoostAnimation");
         }
+
         _rb.velocity = new Vector3(_boostSpeed, 0.0f, 0.0f);
     }
 
@@ -161,6 +183,7 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
             IsFirstFrameOfBoost = false;
             _boostAnim.Play("BoostAnimation");
         }
+
         _rb.velocity = new Vector3(-_boostSpeed, 0.0f, 0.0f);
     }
 
@@ -260,15 +283,27 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
     }
 
 
+    private void ApplyProjectiles() {
+        _projectilesParticles.transform.position = transform.position;
+        _timer.TickProjectiles();
+        if (!_timer.IsProjectilesTimeUp) return;
+        IsProjectiles = false;
+        _timer.ZeroProjectiles();
+        _projectilesParticles.Stop(true);
+        _projectilesBarAnim.Play("Turn Off");
+    }
+
     // Update is called once per frame
     private void Update() {
         if (_gameManagerScript.IsPaused) {
             return;
         }
+
         UpdateTimeScore();
         if (IsBoosted) ApplyBoost();
         if (IsDestructive) ApplyDestruction();
         if (IsMagnetising) ApplyMagnetism();
+        if (IsProjectiles) ApplyProjectiles();
         GravityTweak();
         GetInputAndApplyMovement();
     }

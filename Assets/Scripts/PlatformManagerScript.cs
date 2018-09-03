@@ -20,6 +20,7 @@ public class PlatformManagerScript : MonoBehaviour {
     public List<GameObject> Platforms;
 
     private GameManagerScript _gameManagerScript;
+    private ParticleSystem _backgroundParticles;
     private float _timer;
     private float _timeBetweenSpawns = 0.3f;
 
@@ -43,6 +44,8 @@ public class PlatformManagerScript : MonoBehaviour {
             instructions2
         };
         _lastSpawnedSize = 3f;
+        _backgroundParticles = GameObject.Find("Background Particle System")
+            .GetComponent<ParticleSystem>();
     }
 
     private bool IsTimeUp() {
@@ -140,6 +143,8 @@ public class PlatformManagerScript : MonoBehaviour {
             .GetComponent<PlayerScriptWithAnimator>().Score;
         PlatformSpeed =
             PlatformSpeedAcceleration * score + InitialPlatformSpeed;
+        var backgroundParticlesMain = _backgroundParticles.main;
+        backgroundParticlesMain.startSpeed = PlatformSpeed * 2;
     }
 
     // Update is called once per frame

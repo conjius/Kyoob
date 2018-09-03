@@ -9,10 +9,12 @@ public class PowerUpScript : MonoBehaviour {
     private Animator _anim;
     private Animator _parentAnim;
     private Animator _destructionBarAnim;
+    private Animator _projectilesBarAnim;
     private Animator _magnetismBarAnim;
     private Collider _collider;
     private GameManagerScript.GameTimer _timer;
     private ParticleSystem _magnetismParticles;
+    private ParticleSystem _projectiles;
 
     private List<PowerUpManager.PowerUp> _powerUps;
 
@@ -32,6 +34,8 @@ public class PowerUpScript : MonoBehaviour {
             .GetComponent<Animator>();
         _magnetismBarAnim = GameObject.Find("Magnetism Bar Parent")
             .GetComponent<Animator>();
+        _projectilesBarAnim = GameObject.Find("Projectiles Bar Parent")
+            .GetComponent<Animator>();
         _playerScript = _player.GetComponent<PlayerScriptWithAnimator>();
         _powerUpManager = GameObject.Find("Power Up Manager")
             .GetComponent<PowerUpManager>();
@@ -41,6 +45,8 @@ public class PowerUpScript : MonoBehaviour {
         _magnetismParticles =
             GameObject.Find("Player Animation Parent/Magnet Particle System")
                 .GetComponent<ParticleSystem>();
+        _projectiles = GameObject.Find("Projectiles Particle System")
+            .GetComponent<ParticleSystem>();
         _powerUps = GameObject.Find("Power Up Manager")
             .GetComponent<PowerUpManager>().PowerUps;
         if (_powerUps == null) return;
@@ -78,6 +84,12 @@ public class PowerUpScript : MonoBehaviour {
                 _magnetismParticles.Play(true);
                 _magnetismBarAnim.Play("Turn On");
                 _timer.ZeroMagnet();
+                break;
+            case PowerUpManager.PowerUp.Type.Projectiles:
+                _playerScript.IsProjectiles = true;
+                _projectiles.Play(true);
+                _projectilesBarAnim.Play("Turn On");
+                _timer.ZeroProjectiles();
                 break;
             default:
                 throw new ArgumentOutOfRangeException();

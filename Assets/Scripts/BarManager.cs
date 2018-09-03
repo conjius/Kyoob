@@ -6,6 +6,7 @@ using UnityEngine;
 public class BarManager : MonoBehaviour {
     private Transform _destructionBarTransform;
     private Transform _magnetismBarTransform;
+    private Transform _projectilesBarTransform;
     private PlayerScriptWithAnimator _playerScript;
     private GameManagerScript _gameManagerScript;
     private float _destructionTimeLimit;
@@ -19,6 +20,9 @@ public class BarManager : MonoBehaviour {
             .GetComponent<Transform>();
         _magnetismBarTransform = GameObject
             .Find("Magnetism Bar Parent/Magnetism Bar")
+            .GetComponent<Transform>();
+        _projectilesBarTransform = GameObject
+            .Find("Projectiles Bar Parent/Projectiles Bar")
             .GetComponent<Transform>();
         _playerScript = GameObject.Find("Player Animation Parent/Boost Stretcher/Player")
             .GetComponent<PlayerScriptWithAnimator>();
@@ -50,6 +54,16 @@ public class BarManager : MonoBehaviour {
             CalculatePositionByTime(_destructionBarTransform,
                 _gameManagerScript.Timer.DestructionTimeLimit,
                 _gameManagerScript.Timer.DestructionTimer);
+
+        }
+
+        if (_playerScript.IsProjectiles) {
+            CalculateScaleByTime(_projectilesBarTransform,
+                _gameManagerScript.Timer.ProjectilesTimeLimit,
+                _gameManagerScript.Timer.ProjectilesTimer);
+            CalculatePositionByTime(_projectilesBarTransform,
+                _gameManagerScript.Timer.ProjectilesTimeLimit,
+                _gameManagerScript.Timer.ProjectilesTimer);
         }
 
         if (!_playerScript.IsMagnetising) return;

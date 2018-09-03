@@ -19,11 +19,13 @@ public class PauseMenuScript : MonoBehaviour {
         RaycastHit hit;
         if (!Physics.Raycast(ray, out hit)) return;
         if (hit.collider == ResumeCollider) {
+            if (Vibration.HasVibrator()) Vibration.Vibrate(10);
             _gameManagerScript.Resume();
             return;
         }
 
         if (hit.collider != RestartCollider) return;
+        if (Vibration.HasVibrator()) Vibration.Vibrate(10);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

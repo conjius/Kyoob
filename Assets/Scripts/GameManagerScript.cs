@@ -16,9 +16,13 @@ public class GameManagerScript : MonoBehaviour {
         public float MagnetTimeLimit;
         public bool IsMagnetTimeUp;
 
+        public float ProjectilesTimer;
+        public float ProjectilesTimeLimit;
+        public bool IsProjectilesTimeUp;
+
 
         public GameTimer(float boostTimeLimit, float destructionTimeLimit,
-            float magnetTimeLimit) {
+            float magnetTimeLimit, float projectilesTimeLimit) {
             _boostTimer = 0.0f;
             _boostTimeLimit = boostTimeLimit;
             IsBoostTimeUp = false;
@@ -30,6 +34,10 @@ public class GameManagerScript : MonoBehaviour {
             MagnetTimer = 0.0f;
             MagnetTimeLimit = magnetTimeLimit;
             IsMagnetTimeUp = false;
+
+            ProjectilesTimer = 0.0f;
+            ProjectilesTimeLimit = projectilesTimeLimit;
+            IsProjectilesTimeUp = false;
         }
 
         public void TickBoost() {
@@ -53,6 +61,13 @@ public class GameManagerScript : MonoBehaviour {
             IsMagnetTimeUp = true;
         }
 
+        public void TickProjectiles() {
+            if (IsProjectilesTimeUp) return;
+            ProjectilesTimer += Time.deltaTime;
+            if (ProjectilesTimer < ProjectilesTimeLimit) return;
+            IsProjectilesTimeUp = true;
+        }
+
         public void ZeroDestruction() {
             IsDestructionTimeUp = false;
             DestructionTimer = 0.0f;
@@ -67,6 +82,11 @@ public class GameManagerScript : MonoBehaviour {
             IsMagnetTimeUp = false;
             MagnetTimer = 0.0f;
         }
+
+        public void ZeroProjectiles() {
+            IsProjectilesTimeUp = false;
+            ProjectilesTimer = 0.0f;
+        }
     }
 
     private Renderer _instructions1;
@@ -80,6 +100,7 @@ public class GameManagerScript : MonoBehaviour {
     public GameTimer Timer;
     public bool IsPaused;
     private bool _isEscKeyReleased;
+    private PlayerScriptWithAnimator _playerScript;
 
     // Use this for initialization
     private void Start() {
@@ -94,12 +115,17 @@ public class GameManagerScript : MonoBehaviour {
         _pauseMenuAnim = GameObject.Find("GrandDaddy").GetComponent<Animator>();
         Timer = new GameTimer(_powerUpManager.BoostPowerUpDuration,
             _powerUpManager.DestructionPowerUpDuration,
-            _powerUpManager.MagnetPowerUpDuration);
+            _powerUpManager.MagnetPowerUpDuration,
+            _powerUpManager.ProjectilesPowerUpDuration);
         _instructions1 =
             GameObject.Find("instructions1").GetComponent<Renderer>();
         _instructions2 =
             GameObject.Find("instructions2").GetComponent<Renderer>();
         _isEscKeyReleased = true;
+        _playerScript =
+            GameObject.Find(
+                    "GrandDaddy/Player Animation Parent/Boost Stretcher/Player")
+                .GetComponent<PlayerScriptWithAnimator>();
     }
 
     public void LoseLife() {
@@ -115,7 +141,8 @@ public class GameManagerScript : MonoBehaviour {
         _livesLeftKyoobParentAnim.Play("LivesCountKyoobParentPickupAnimation");
     }
 
-    private static void RestartLevel() {
+    private void RestartLevel() {
+        PlayerPrefs.SetInt("lastScore", Mathf.RoundToInt(_playerScript.Score));
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -153,6 +180,7 @@ public class GameManagerScript : MonoBehaviour {
         if (Input.GetKey(KeyCode.Escape)) {
             EscKeyPressed();
         }
+
         if (Input.GetKeyUp(KeyCode.Escape)) {
             EscKeyReleased();
         }
