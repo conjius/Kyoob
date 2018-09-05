@@ -5,11 +5,15 @@ public class PauseMenuScript : MonoBehaviour {
     public Collider ResumeCollider;
     public Collider RestartCollider;
     private GameManagerScript _gameManagerScript;
+    private AudioManager _audioManager;
 
     // Use this for initialization
     private void Start() {
-        _gameManagerScript = GameObject.Find("GrandDaddy/Menu Parent/Menu/Game Manager")
+        _gameManagerScript = GameObject
+            .Find("GrandDaddy/Menu Parent/Menu/Game Manager")
             .GetComponent<GameManagerScript>();
+        _audioManager = GameObject.Find("Audio Manager")
+            .GetComponent<AudioManager>();
     }
 
     // Update is called once per frame
@@ -19,13 +23,15 @@ public class PauseMenuScript : MonoBehaviour {
         RaycastHit hit;
         if (!Physics.Raycast(ray, out hit)) return;
         if (hit.collider == ResumeCollider) {
-            if (Vibration.HasVibrator()) Vibration.Vibrate(10);
+            _audioManager.Play("Tap");
+            if (Vibration.HasVibrator()) Vibration.Vibrate(20);
             _gameManagerScript.Resume();
             return;
         }
 
         if (hit.collider != RestartCollider) return;
-        if (Vibration.HasVibrator()) Vibration.Vibrate(10);
+        _audioManager.Play("Tap");
+        if (Vibration.HasVibrator()) Vibration.Vibrate(20);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

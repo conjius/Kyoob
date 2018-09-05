@@ -1,0 +1,155 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1674294368135268}
+  m_IsPrefabParent: 1
+--- !u!1 &1674294368135268
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4990244553400914}
+  - component: {fileID: 114141915592653212}
+  m_Layer: 0
+  m_Name: Audio Manager Prefab
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4990244553400914
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1674294368135268}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114141915592653212
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1674294368135268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a0ac9ec80321f8469457de27a021822, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MixerGroup: {fileID: 0}
+  Sounds:
+  - Name: Coin
+    Clip: {fileID: 8300000, guid: 0f428d28d088e86499ebe58946bf85e5, type: 3}
+    Volume: 0.5
+    VolumeVariance: 0.2
+    Pitch: 2
+    PitchVariance: 0.3
+    Loop: 0
+    MixerGroup: {fileID: 0}
+    Source: {fileID: 0}
+  - Name: BoostFwd
+    Clip: {fileID: 8300000, guid: 20eb9f2c4b5b92648aeec22c9ab7f5a4, type: 3}
+    Volume: 0.6
+    VolumeVariance: 0.2
+    Pitch: 1
+    PitchVariance: 0.3
+    Loop: 0
+    MixerGroup: {fileID: 0}
+    Source: {fileID: 0}
+  - Name: BoostBack
+    Clip: {fileID: 8300000, guid: 0515b516f16872140bf49f5143ae20e6, type: 3}
+    Volume: 0.6
+    VolumeVariance: 0.2
+    Pitch: 1
+    PitchVariance: 0.3
+    Loop: 0
+    MixerGroup: {fileID: 0}
+    Source: {fileID: 0}
+  - Name: Magnetism
+    Clip: {fileID: 8300000, guid: eb257656bc774f04692be12ce6d3e20b, type: 3}
+    Volume: 0.4
+    VolumeVariance: 0.1
+    Pitch: 1.65
+    PitchVariance: 0
+    Loop: 0
+    MixerGroup: {fileID: 0}
+    Source: {fileID: 0}
+  - Name: PlatformDestruction
+    Clip: {fileID: 8300000, guid: c828bee2afa768c43befab152f4fe4c6, type: 3}
+    Volume: 0.5
+    VolumeVariance: 0.2
+    Pitch: 1.3
+    PitchVariance: 0.3
+    Loop: 0
+    MixerGroup: {fileID: 0}
+    Source: {fileID: 0}
+  - Name: LoseLife
+    Clip: {fileID: 8300000, guid: 9a6f945a3dd53964eb8db4ad7458e095, type: 3}
+    Volume: 0.3
+    VolumeVariance: 0.2
+    Pitch: 1
+    PitchVariance: 0.3
+    Loop: 0
+    MixerGroup: {fileID: 0}
+    Source: {fileID: 0}
+  - Name: AddLife
+    Clip: {fileID: 8300000, guid: 0f35355fc0004ab44bf00b2b31f5acc0, type: 3}
+    Volume: 0.4
+    VolumeVariance: 0.2
+    Pitch: 1.3
+    PitchVariance: 0.3
+    Loop: 0
+    MixerGroup: {fileID: 0}
+    Source: {fileID: 0}
+  - Name: Destruction
+    Clip: {fileID: 8300000, guid: b98b6ef4a57a2de4db8351866006b3b5, type: 3}
+    Volume: 0.7
+    VolumeVariance: 0.1
+    Pitch: 1.4
+    PitchVariance: 0.2
+    Loop: 0
+    MixerGroup: {fileID: 0}
+    Source: {fileID: 0}
+  - Name: Projectiles
+    Clip: {fileID: 8300000, guid: f2b65f77afadc7d488fa6aadad007365, type: 3}
+    Volume: 1
+    VolumeVariance: 0.1
+    Pitch: 1.2
+    PitchVariance: 0.1
+    Loop: 0
+    MixerGroup: {fileID: 0}
+    Source: {fileID: 0}
+  - Name: Tap
+    Clip: {fileID: 8300000, guid: f2df58715c1fc814ca911b2fef05e96d, type: 3}
+    Volume: 0.5
+    VolumeVariance: 0.1
+    Pitch: 1.3
+    PitchVariance: 0.1
+    Loop: 0
+    MixerGroup: {fileID: 0}
+    Source: {fileID: 0}
+  - Name: Turn On
+    Clip: {fileID: 8300000, guid: bb8923bad19c8df4e85b6653e59e43de, type: 3}
+    Volume: 0.4
+    VolumeVariance: 0
+    Pitch: 1.4
+    PitchVariance: 0
+    Loop: 0
+    MixerGroup: {fileID: 0}
+    Source: {fileID: 0}
+  FirstGameFrame: 1

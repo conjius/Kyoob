@@ -14,6 +14,7 @@
         </e>
       </e>
       <e p="Assets\Scripts" t="Include">
+        <e p="AudioManager.cs" t="Include" />
         <e p="BarManager.cs" t="Include" />
         <e p="CameraShake.cs" t="Include" />
         <e p="CoinManager.cs" t="Include" />
@@ -29,6 +30,7 @@
         <e p="PlayerScriptWithAnimator.cs" t="Include" />
         <e p="PowerUpManager.cs" t="Include" />
         <e p="PowerUpScript.cs" t="Include" />
+        <e p="Sound.cs" t="Include" />
       </e>
       <e p="Assets\TextMesh Pro" t="Include">
         <e p="Examples &amp; Extras" t="Include">

@@ -16,6 +16,7 @@ public class CoinManager : MonoBehaviour {
     private float _coinSpeed;
     private int _distanceBetweenPlatforms;
     private GameManagerScript _gameManagerScript;
+    private AudioManager _audioManager;
 
 
     // Use this for initialization
@@ -31,8 +32,10 @@ public class CoinManager : MonoBehaviour {
         _timeToNextSpawn = Random.Range(MinSpawnDelay, MaxSpawnDelay);
         _coinSpeed = _platformManager.PlatformSpeed;
         _distanceBetweenPlatforms = _platformManager.DistanceBetweenPlatforms;
-        _gameManagerScript = GameObject.Find("GrandDaddy/Menu Parent/Menu/Game Manager")
+        _gameManagerScript = GameObject
+            .Find("GrandDaddy/Menu Parent/Menu/Game Manager")
             .GetComponent<GameManagerScript>();
+
     }
 
     private static int RoundToMultipleOfN(int n, float input) {

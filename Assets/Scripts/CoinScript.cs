@@ -5,6 +5,7 @@ public class CoinScript : MonoBehaviour {
     private Collider _collider;
     private List<GameObject> _coins;
     private float _score;
+    private AudioManager _audioManager;
 
     private bool _hasVibrator;
 //	private Animator _animator;
@@ -15,11 +16,14 @@ public class CoinScript : MonoBehaviour {
         _collider = GetComponent<Collider>();
         _coins = GameObject.Find("Coin Manager")
             .GetComponent<CoinManager>().Coins;
+        _audioManager = GameObject.Find("Audio Manager")
+            .GetComponent<AudioManager>();
     }
 
     private void OnTriggerEnter(Collider other) {
         if (!other.gameObject.CompareTag("Player")) return;
-        if (_hasVibrator) Vibration.Vibrate(10);
+        _audioManager.Play("Coin");
+        if (_hasVibrator) Vibration.Vibrate(20);
         GameObject.Find("Player Animation Parent/Boost Stretcher/Player")
             .GetComponent<PlayerScriptWithAnimator>()
             .AddToScore(10f, false);

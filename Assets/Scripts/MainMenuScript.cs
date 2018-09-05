@@ -5,11 +5,14 @@ public class MainMenuScript : MonoBehaviour {
     public bool IsWaiting;
     public Collider PlayCollider;
     private Animator _mainMenuAnim;
+    private AudioManager _audioManager;
 
     // Use this for initialization
     private void Start() {
         IsWaiting = true;
         _mainMenuAnim = gameObject.GetComponent<Animator>();
+        _audioManager = GameObject.Find("Audio Manager")
+            .GetComponent<AudioManager>();
     }
 
     // Update is called once per frame
@@ -29,7 +32,8 @@ public class MainMenuScript : MonoBehaviour {
         RaycastHit hit;
         if (!Physics.Raycast(ray, out hit) &&
             hit.collider != PlayCollider) return;
-        if (Vibration.HasVibrator()) Vibration.Vibrate(10);
+        _audioManager.Play("Tap");
+        if (Vibration.HasVibrator()) Vibration.Vibrate(20);
         _mainMenuAnim.Play("StartGameAnimation");
     }
 }

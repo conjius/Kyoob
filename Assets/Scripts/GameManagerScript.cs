@@ -102,6 +102,7 @@ public class GameManagerScript : MonoBehaviour {
     public bool IsPaused;
     private bool _isEscKeyReleased;
     private PlayerScriptWithAnimator _playerScript;
+    private AudioManager _audioManager;
 
     // Use this for initialization
     private void Start() {
@@ -128,9 +129,14 @@ public class GameManagerScript : MonoBehaviour {
             GameObject.Find(
                     "GrandDaddy/Player Animation Parent/Boost Stretcher/Player")
                 .GetComponent<PlayerScriptWithAnimator>();
+        _audioManager = GameObject.Find("Audio Manager")
+            .GetComponent<AudioManager>();
+        _audioManager.FirstGameFrame = true;
+
     }
 
     public void LoseLife() {
+        _audioManager.Play("LoseLife");
         if (Vibration.HasVibrator()) Vibration.Vibrate(20);
         _camAnim.Play("LoseLifeAnimation");
         LivesLeft--;
@@ -138,11 +144,12 @@ public class GameManagerScript : MonoBehaviour {
             RestartLevel();
             return;
         }
+
         _livesLeftText.text = "X" + LivesLeft;
         _livesLeftTextAnim.Play("LivesCountTextPickupAnimation");
         _livesLeftKyoobParentAnim.Play("LivesCountKyoobParentPickupAnimation");
     }
-    
+
     public void AddLife() {
         if (Vibration.HasVibrator()) Vibration.Vibrate(20);
         LivesLeft++;
@@ -152,6 +159,7 @@ public class GameManagerScript : MonoBehaviour {
     }
 
     private void RestartLevel() {
+        _audioManager.StopSounds();
         PlayerPrefs.SetInt("lastScore", Mathf.RoundToInt(_playerScript.Score));
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
@@ -177,6 +185,7 @@ public class GameManagerScript : MonoBehaviour {
 
     private void EscKeyPressed() {
         if (!_isEscKeyReleased) return;
+        _audioManager.Play("Tap");
         _isEscKeyReleased = false;
         if (IsPaused) Resume();
         else Pause();

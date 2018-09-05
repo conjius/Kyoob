@@ -5,7 +5,7 @@ using UnityEngine;
 public class PowerUpScript : MonoBehaviour {
     private GameObject _player;
     private PlayerScriptWithAnimator _playerScript;
-    private PowerUpManager _powerUpManager;
+    private AudioManager _audioManager;
     private GameManagerScript _gameManager;
     private Animator _anim;
     private Animator _parentAnim;
@@ -39,8 +39,8 @@ public class PowerUpScript : MonoBehaviour {
             .GetComponent<Animator>();
         _camAnim = Camera.main.GetComponent<Animator>();
         _playerScript = _player.GetComponent<PlayerScriptWithAnimator>();
-        _powerUpManager = GameObject.Find("Power Up Manager")
-            .GetComponent<PowerUpManager>();
+        _audioManager = GameObject.Find("Audio Manager")
+            .GetComponent<AudioManager>();
         _gameManager = GameObject
             .Find("GrandDaddy/Menu Parent/Menu/Game Manager")
             .GetComponent<GameManagerScript>();
@@ -62,9 +62,9 @@ public class PowerUpScript : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other) {
         if (!other.gameObject.CompareTag("Player")) return;
-        if (_hasVibrator) Vibration.Vibrate(20);
         switch (_type) {
             case PowerUpManager.PowerUp.Type.BoostFwd:
+                _audioManager.Play("BoostFwd");
                 if (!_playerScript.IsAddingLosingLife &&
                     !_playerScript.IsRespawning)
                     _camAnim.Play("BoostFwdAnimation");
@@ -72,6 +72,7 @@ public class PowerUpScript : MonoBehaviour {
                 _playerScript.IsFwdBoost = true;
                 break;
             case PowerUpManager.PowerUp.Type.BoostBack:
+                _audioManager.Play("BoostBack");
                 if (!_playerScript.IsAddingLosingLife &&
                     !_playerScript.IsRespawning)
                     _camAnim.Play("BoostBackAnimation");
@@ -79,6 +80,7 @@ public class PowerUpScript : MonoBehaviour {
                 _playerScript.IsFwdBoost = false;
                 break;
             case PowerUpManager.PowerUp.Type.Destruction:
+                _audioManager.Play("Destruction");
                 _camAnim.Play("DestructionAnimation");
                 _playerScript.IsDestructive = true;
                 _anim.Play("IdleDestructionStart");
@@ -87,6 +89,7 @@ public class PowerUpScript : MonoBehaviour {
                 _timer.ZeroDestruction();
                 break;
             case PowerUpManager.PowerUp.Type.Magnet:
+                _audioManager.Play("Magnetism");
                 _camAnim.Play("MagnetismAnimation");
                 _playerScript.IsMagnetising = true;
                 _magnetismParticles.Play(true);
@@ -94,6 +97,7 @@ public class PowerUpScript : MonoBehaviour {
                 _timer.ZeroMagnet();
                 break;
             case PowerUpManager.PowerUp.Type.Projectiles:
+                _audioManager.Play("Projectiles");
                 _camAnim.Play("ProjectilesAnimation");
                 _playerScript.IsProjectiles = true;
                 _projectiles.Play(true);
@@ -101,6 +105,7 @@ public class PowerUpScript : MonoBehaviour {
                 _timer.ZeroProjectiles();
                 break;
             case PowerUpManager.PowerUp.Type.ExtraLife:
+                _audioManager.Play("AddLife");
                 _gameManager.AddLife();
                 _camAnim.Play("AddLifeAnimation");
                 _parentAnim.Play("AddLifeAnimation");
@@ -109,6 +114,7 @@ public class PowerUpScript : MonoBehaviour {
                 throw new ArgumentOutOfRangeException();
         }
 
+        if (_hasVibrator) Vibration.Vibrate(20);
         for (var i = _powerUps.Count - 1; i >= 0; i--) {
             if (_powerUps[i]._object.GetComponent<Collider>() ==
                 _collider)

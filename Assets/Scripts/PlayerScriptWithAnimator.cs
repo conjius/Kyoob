@@ -108,7 +108,7 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
 
     private void JumpKeyPressed() {
         if (!_isJumpKeyReleased) return;
-        if (IsRespawning || IsAddingLosingLife) return;
+        if (IsRespawning) return;
         _anim.Play(IsDestructive
             ? "JumpAnimationWithDestruction"
             : "JumpAnimation");
@@ -160,7 +160,7 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
     }
 
     private void GravityTweak() {
-        if (IsBoosted || IsRespawning) {
+        if (IsBoosted) {
             Physics.gravity = new Vector3(0.0f, 0.0f, 0.0f);
             return;
         }

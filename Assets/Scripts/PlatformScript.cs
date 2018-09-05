@@ -10,6 +10,7 @@ public class PlatformScript : MonoBehaviour {
     private GameManagerScript _gameManager;
     public bool IsDestroyed;
     private CameraShake _cameraShake;
+    private AudioManager _audioManager;
 
     private void Start() {
         _playerScript = GameObject
@@ -28,10 +29,13 @@ public class PlatformScript : MonoBehaviour {
                 .GetComponent<ParticleSystem>();
         IsDestroyed = false;
         _cameraShake = Camera.main.GetComponent<CameraShake>();
+        _audioManager = GameObject.Find("Audio Manager")
+            .GetComponent<AudioManager>();
     }
 
     private void OnTriggerEnter(Collider other) {
         if (other.name != "Player" || IsDestroyed) return;
+        _audioManager.Play("PlatformDestruction");
         _cameraShake.enabled = false;
         _cameraShake.enabled = true;
         _platformDebrisParticleSystem.Play(true);
@@ -47,13 +51,13 @@ public class PlatformScript : MonoBehaviour {
 
         var components = gameObject.GetComponents<Collider>();
         Destroy(components[0]);
-//        Destroy(components[1]);
         IsDestroyed = true;
     }
 
     private void OnParticleCollision(GameObject particleSystem) {
         if (particleSystem.gameObject.name !=
             "Projectiles Particle System") return;
+        _audioManager.Play("PlatformDestruction");
         _cameraShake.enabled = false;
         _cameraShake.enabled = true;
         _platformDebrisParticleSystem.Play(true);
