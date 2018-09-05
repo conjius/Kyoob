@@ -12,9 +12,11 @@ public class PlatformScript : MonoBehaviour {
     private CameraShake _cameraShake;
 
     private void Start() {
-        _playerScript = GameObject.Find("Player Animation Parent/Boost Stretcher/Player")
+        _playerScript = GameObject
+            .Find("Player Animation Parent/Boost Stretcher/Player")
             .GetComponent<PlayerScriptWithAnimator>();
-        _gameManager = GameObject.Find("GrandDaddy/Menu Parent/Menu/Game Manager")
+        _gameManager = GameObject
+            .Find("GrandDaddy/Menu Parent/Menu/Game Manager")
             .GetComponent<GameManagerScript>();
         _playerParentAnim = GameObject.Find("Player Animation Parent")
             .GetComponent<Animator>();
@@ -36,12 +38,13 @@ public class PlatformScript : MonoBehaviour {
         gameObject.transform.parent.gameObject.GetComponent<Animator>()
             .Play("PlatformParentDestroyAnimation");
         if (Vibration.HasVibrator()) Vibration.Vibrate(20);
-        if (!_playerScript.IsDestructive && !_playerScript.IsBoosted) {
+        if (!_playerScript.IsDestructive && !_playerScript.IsBoosted &&
+            !_playerScript.IsAddingLosingLife) {
             _gameManager.LoseLife();
             _playerDebrisParticleSystem.Play(true);
             _playerParentAnim.Play("PlayerParentHitAnimation");
-            
         }
+
         var components = gameObject.GetComponents<Collider>();
         Destroy(components[0]);
 //        Destroy(components[1]);

@@ -94,6 +94,7 @@ public class GameManagerScript : MonoBehaviour {
     private Animator _pauseMenuAnim;
     private Animator _livesLeftTextAnim;
     private Animator _livesLeftKyoobParentAnim;
+    private Animator _camAnim;
     private PowerUpManager _powerUpManager;
     public int LivesLeft;
     private TextMeshProUGUI _livesLeftText;
@@ -113,6 +114,7 @@ public class GameManagerScript : MonoBehaviour {
         _livesLeftKyoobParentAnim = GameObject
             .Find("Lives Count Kyoob Parent").GetComponent<Animator>();
         _pauseMenuAnim = GameObject.Find("GrandDaddy").GetComponent<Animator>();
+        _camAnim = Camera.main.GetComponent<Animator>();
         Timer = new GameTimer(_powerUpManager.BoostPowerUpDuration,
             _powerUpManager.DestructionPowerUpDuration,
             _powerUpManager.MagnetPowerUpDuration,
@@ -129,13 +131,21 @@ public class GameManagerScript : MonoBehaviour {
     }
 
     public void LoseLife() {
-        if (Vibration.HasVibrator()) Vibration.Vibrate(40);
+        if (Vibration.HasVibrator()) Vibration.Vibrate(20);
+        _camAnim.Play("LoseLifeAnimation");
         LivesLeft--;
         if (LivesLeft < 1) {
             RestartLevel();
             return;
         }
-
+        _livesLeftText.text = "X" + LivesLeft;
+        _livesLeftTextAnim.Play("LivesCountTextPickupAnimation");
+        _livesLeftKyoobParentAnim.Play("LivesCountKyoobParentPickupAnimation");
+    }
+    
+    public void AddLife() {
+        if (Vibration.HasVibrator()) Vibration.Vibrate(20);
+        LivesLeft++;
         _livesLeftText.text = "X" + LivesLeft;
         _livesLeftTextAnim.Play("LivesCountTextPickupAnimation");
         _livesLeftKyoobParentAnim.Play("LivesCountKyoobParentPickupAnimation");
@@ -185,4 +195,11 @@ public class GameManagerScript : MonoBehaviour {
             EscKeyReleased();
         }
     }
+
+//    private void OnApplicationPause(bool pauseStatus) {
+//        IsPaused = pauseStatus;
+//        ToggleInstructions();
+//        if (!IsPaused) Pause();
+//        else Resume();
+//    }
 }

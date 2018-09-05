@@ -38,6 +38,7 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
     public bool IsProjectiles;
     public bool IsFwdBoost;
     public bool IsRespawning;
+    public bool IsAddingLosingLife;
     private float _boostSpeed;
 
     // Use this for initialization
@@ -99,6 +100,7 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
         IsProjectiles = false;
         IsRespawning = false;
         IsFwdBoost = true;
+        IsAddingLosingLife = false;
         _boostSpeed = GameObject.Find("Power Up Manager")
             .GetComponent<PowerUpManager>().BoostSpeed;
         GravityTweak();
@@ -106,6 +108,7 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
 
     private void JumpKeyPressed() {
         if (!_isJumpKeyReleased) return;
+        if (IsRespawning || IsAddingLosingLife) return;
         _anim.Play(IsDestructive
             ? "JumpAnimationWithDestruction"
             : "JumpAnimation");
@@ -168,7 +171,6 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
     }
 
     private void BoostFwd() {
-//        _parent.transform.localScale = new Vector3(2.0f, 0.9f, 1.0f);
         if (IsFirstFrameOfBoost) {
             IsFirstFrameOfBoost = false;
             _boostAnim.Play("BoostAnimation");
@@ -178,7 +180,6 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
     }
 
     private void BoostBack() {
-//        _parent.transform.localScale = new Vector3(2.0f, 0.9f, 1.0f);
         if (IsFirstFrameOfBoost) {
             IsFirstFrameOfBoost = false;
             _boostAnim.Play("BoostAnimation");
@@ -188,11 +189,9 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
     }
 
     private void Unboost() {
-//        _parent.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         _boostAnim.Play("UnboostAnimation");
         IsFirstFrameOfBoost = true;
         _rb.velocity = new Vector3(0.0f, 5.0f, 0.0f);
-//        _rb.AddForce(new Vector3(0.0f, 10.0f, 0.0f));
     }
 
 

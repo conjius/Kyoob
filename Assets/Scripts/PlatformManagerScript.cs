@@ -26,6 +26,7 @@ public class PlatformManagerScript : MonoBehaviour {
 
 
     private float _lastSpawnedSize;
+    private int _lastSpawnedY;
 
     private GameObject _templatePlatform;
 
@@ -44,6 +45,7 @@ public class PlatformManagerScript : MonoBehaviour {
             instructions2
         };
         _lastSpawnedSize = 3f;
+        _lastSpawnedY = 0;
         _backgroundParticles = GameObject.Find("Background Particle System")
             .GetComponent<ParticleSystem>();
     }
@@ -78,16 +80,23 @@ public class PlatformManagerScript : MonoBehaviour {
         var newPlatformY =
             RoundToMultipleOfN(DistanceBetweenPlatforms,
                 Random.Range(MinSpawnY, MaxSpawnY));
+        for (var i = 0; i < 4; ++i) {
+            if (newPlatformY != _lastSpawnedY) break;
+            // try to get a new random Y value
+            newPlatformY =
+                RoundToMultipleOfN(DistanceBetweenPlatforms,
+                    Random.Range(MinSpawnY, MaxSpawnY));
+        }
+
+        _lastSpawnedY = newPlatformY;
         var newPlatformDebrisSystem = Instantiate(PlatformDebrisSystemPrefab,
-            new Vector3(
-                SpawnPosX, newPlatformY, 0f), Quaternion.identity);
+            new Vector3(SpawnPosX, newPlatformY, 0f), Quaternion.identity);
         var newParentPlatform = Instantiate(ParentPlatformPrefab, new Vector3(
-                SpawnPosX, newPlatformY, 0f),
-            Quaternion.identity,
+                SpawnPosX, newPlatformY, 0f), Quaternion.identity,
             newPlatformDebrisSystem.transform);
         var newPlatform = Instantiate(PlatformPrefab, new Vector3(
-                SpawnPosX, newPlatformY, 0f),
-            Quaternion.identity, newParentPlatform.transform);
+                SpawnPosX, newPlatformY, 0f), Quaternion.identity,
+            newParentPlatform.transform);
         newPlatformDebrisSystem.tag = "Platform";
         newPlatform.tag = "Platform";
         newParentPlatform.tag = "Platform";

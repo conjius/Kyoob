@@ -11,7 +11,8 @@ public class PowerUpManager : MonoBehaviour {
             BoostBack,
             Destruction,
             Magnet,
-            Projectiles
+            Projectiles,
+            ExtraLife
         }
 
         public Type _type;
@@ -27,18 +28,30 @@ public class PowerUpManager : MonoBehaviour {
         }
 
         public static Type RandomType() {
-            var rand = Random.Range(0, 5);
+            var rand = Random.Range(0, 16);
             switch (rand) {
                 case 0:
-                    return Type.BoostBack;
                 case 1:
-                    return Type.BoostFwd;
                 case 2:
-                    return Type.Destruction;
+                    return Type.BoostBack;
                 case 3:
-                    return Type.Magnet;
                 case 4:
+                case 5:
+                    return Type.BoostFwd;
+                case 6:
+                case 7:
+                case 8:
+                    return Type.Destruction;
+                case 9:
+                case 10:
+                case 11:
+                    return Type.Magnet;
+                case 12:
+                case 13:
+                case 14:
                     return Type.Projectiles;
+                case 15:
+                    return Type.ExtraLife;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -55,6 +68,7 @@ public class PowerUpManager : MonoBehaviour {
     public Color DestructionColor;
     public Color MagnetColor;
     public Color ProjectilesColor;
+    public Color ExtraLifeColor;
     private int _distanceBetweenPlatforms;
     private PlatformManagerScript _platformManager;
     public GameObject PowerUpPrefab;
@@ -88,7 +102,8 @@ public class PowerUpManager : MonoBehaviour {
         _timeToNextSpawn = Random.Range(MinSpawnDelay, MaxSpawnDelay);
         _powerUpSpeed = _platformManager.PlatformSpeed;
         _distanceBetweenPlatforms = _platformManager.DistanceBetweenPlatforms;
-        _gameManagerScript = GameObject.Find("GrandDaddy/Menu Parent/Menu/Game Manager")
+        _gameManagerScript = GameObject
+            .Find("GrandDaddy/Menu Parent/Menu/Game Manager")
             .GetComponent<GameManagerScript>();
     }
 
@@ -105,6 +120,7 @@ public class PowerUpManager : MonoBehaviour {
             case PowerUp.Type.Destruction: return DestructionColor;
             case PowerUp.Type.Magnet: return MagnetColor;
             case PowerUp.Type.Projectiles: return ProjectilesColor;
+            case PowerUp.Type.ExtraLife: return ExtraLifeColor;
             default:
                 throw new ArgumentOutOfRangeException("type", type, null);
         }
@@ -117,7 +133,7 @@ public class PowerUpManager : MonoBehaviour {
             case PowerUp.Type.Destruction: return DestructionPowerUpDuration;
             case PowerUp.Type.Magnet: return MagnetPowerUpDuration;
             case PowerUp.Type.Projectiles: return ProjectilesPowerUpDuration;
-
+            case PowerUp.Type.ExtraLife: return 0.0f;
             default:
                 throw new ArgumentOutOfRangeException("type", type, null);
         }
@@ -139,7 +155,10 @@ public class PowerUpManager : MonoBehaviour {
         newPowerUpObj.GetComponent<Renderer>().material.SetColor("_Color",
             GetColorByType(newType));
         var newPowerUpDuration = GetDurationByType(newType);
-        newPowerUpObj.GetComponent<Animator>().Play("PowerUpState");
+        newPowerUpObj.GetComponent<Animator>().Play(
+            newType == PowerUp.Type.ExtraLife
+                ? "ExtraLifeAnimation"
+                : "PowerUpState");
         PowerUps.Add(new PowerUp(newType, newPowerUpDuration,
             newPowerUpParentObj,
             newPowerUpObj.GetComponent<Renderer>().material.color));
