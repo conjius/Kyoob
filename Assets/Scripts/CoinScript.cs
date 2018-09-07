@@ -21,6 +21,16 @@ public class CoinScript : MonoBehaviour {
     }
 
     private void OnTriggerEnter(Collider other) {
+        if (other.gameObject.CompareTag("Platform")) {
+            for (var i = _coins.Count - 1; i >= 0; i--) {
+                if (_coins[i].GetComponent<Collider>() == _collider)
+                    _coins.RemoveAt(i);
+            }
+
+            Destroy(gameObject.transform.GetChild(0).gameObject);
+            Destroy(gameObject);
+            return;
+        }
         if (!other.gameObject.CompareTag("Player")) return;
         _audioManager.Play("Coin");
         if (_hasVibrator) Vibration.Vibrate(20);

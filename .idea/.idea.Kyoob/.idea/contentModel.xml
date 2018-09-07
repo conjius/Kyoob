@@ -20,6 +20,7 @@
         <e p="CoinManager.cs" t="Include" />
         <e p="CoinScript.cs" t="Include" />
         <e p="GameManagerScript.cs" t="Include" />
+        <e p="GameTimer.cs" t="Include" />
         <e p="LoseLimitScript.cs" t="Include" />
         <e p="MainMenuScript.cs" t="Include" />
         <e p="PauseMenuScript.cs" t="Include" />
@@ -30,6 +31,7 @@
         <e p="PlayerScriptWithAnimator.cs" t="Include" />
         <e p="PowerUpManager.cs" t="Include" />
         <e p="PowerUpScript.cs" t="Include" />
+        <e p="ScoreStreak.cs" t="Include" />
         <e p="Sound.cs" t="Include" />
       </e>
       <e p="Assets\TextMesh Pro" t="Include">

@@ -14,7 +14,7 @@ public class PowerUpScript : MonoBehaviour {
     private Animator _magnetismBarAnim;
     private Animator _camAnim;
     private Collider _collider;
-    private GameManagerScript.GameTimer _timer;
+    private GameTimer _timer;
     private ParticleSystem _magnetismParticles;
     private ParticleSystem _projectiles;
 

@@ -11,13 +11,15 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
 
     [Range(9.81f, 500.0f)] public float FallGravity;
     public float Score;
+
     public float MaxMagnetismDistance;
     public float MagnetismForce;
     private TextMeshProUGUI _scoreText;
     private TextMeshProUGUI _highScoreText;
     private TextMeshProUGUI _lastScoreText;
     private GameManagerScript _gameManagerScript;
-    private GameManagerScript.GameTimer _timer;
+    private GameTimer _timer;
+    private ScoreStreak _scoreStreak;
     private ParticleSystem _magnetismParticles;
     private ParticleSystem _projectilesParticles;
     private ParticleSystem _debrisParticles;
@@ -46,6 +48,7 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
         if (!PlayerPrefs.HasKey("highscore")) {
             PlayerPrefs.SetInt("highscore", 0);
         }
+
         _gameManagerScript = GameObject
             .Find("GrandDaddy/Menu Parent/Menu/Game Manager")
             .GetComponent<GameManagerScript>();
@@ -65,6 +68,9 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
         _parent = gameObject.transform.parent.gameObject
             .GetComponentInParent<Transform>();
         Score = 0.0f;
+        _scoreStreak = _gameManagerScript.ScoreStreakObj;
+        if (_scoreStreak == null) Debug.LogWarning("ScoreStreakObj is null");
+
         _scoreText = GameObject.Find("ScoreCanvas/Score")
             .GetComponent<TextMeshProUGUI>();
         _highScoreText = GameObject.Find("ScoreCanvas/High Score")
@@ -76,6 +82,7 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
                 .Play("NoLastScoreAnimation");
             PlayerPrefs.SetInt("lastScore", 0);
         }
+
         _highScoreText.text = "BEST: " + PlayerPrefs.GetInt("highscore");
         _lastScoreText.text = "LAST: " + PlayerPrefs.GetInt("lastScore");
         _rb = _parent.gameObject.GetComponentInParent<Rigidbody>();
@@ -201,8 +208,11 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
         if (!isTimeBonus) {
             GameObject.Find("ScoreCanvas/Score").GetComponent<Animator>()
                 .Play("ScoreAnimation");
+            _gameManagerScript.BroadcastMessageOrScore("+" + amount, true);
         }
 
+        _scoreStreak.IncreaseStreakAndTryAdvanceToNextTier(
+            Mathf.RoundToInt(amount));
         if (Mathf.RoundToInt(Score) < PlayerPrefs.GetInt("highscore")) return;
         PlayerPrefs.SetInt("highscore", Mathf.RoundToInt(Score));
         if (!isTimeBonus)

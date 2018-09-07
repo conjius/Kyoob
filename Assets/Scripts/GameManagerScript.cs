@@ -1,94 +1,9 @@
-﻿using TMPro;
+﻿using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManagerScript : MonoBehaviour {
-    public class GameTimer {
-        private float _boostTimer;
-        private float _boostTimeLimit;
-        public bool IsBoostTimeUp;
-
-        public float DestructionTimer;
-        public float DestructionTimeLimit;
-        public bool IsDestructionTimeUp;
-
-        public float MagnetTimer;
-        public float MagnetTimeLimit;
-        public bool IsMagnetTimeUp;
-
-        public float ProjectilesTimer;
-        public float ProjectilesTimeLimit;
-        public bool IsProjectilesTimeUp;
-
-
-        public GameTimer(float boostTimeLimit, float destructionTimeLimit,
-            float magnetTimeLimit, float projectilesTimeLimit) {
-            _boostTimer = 0.0f;
-            _boostTimeLimit = boostTimeLimit;
-            IsBoostTimeUp = false;
-
-            DestructionTimer = 0.0f;
-            DestructionTimeLimit = destructionTimeLimit;
-            IsDestructionTimeUp = false;
-
-            MagnetTimer = 0.0f;
-            MagnetTimeLimit = magnetTimeLimit;
-            IsMagnetTimeUp = false;
-
-            ProjectilesTimer = 0.0f;
-            ProjectilesTimeLimit = projectilesTimeLimit;
-            IsProjectilesTimeUp = false;
-        }
-
-        public void TickBoost() {
-            if (IsBoostTimeUp) return;
-            _boostTimer += Time.deltaTime;
-            if (_boostTimer < _boostTimeLimit) return;
-            IsBoostTimeUp = true;
-        }
-
-        public void TickDestruction() {
-            if (IsDestructionTimeUp) return;
-            DestructionTimer += Time.deltaTime;
-            if (DestructionTimer < DestructionTimeLimit) return;
-            IsDestructionTimeUp = true;
-        }
-
-        public void TickMagnet() {
-            if (IsMagnetTimeUp) return;
-            MagnetTimer += Time.deltaTime;
-            if (MagnetTimer < MagnetTimeLimit) return;
-            IsMagnetTimeUp = true;
-        }
-
-        public void TickProjectiles() {
-            if (IsProjectilesTimeUp) return;
-            ProjectilesTimer += Time.deltaTime;
-            if (ProjectilesTimer < ProjectilesTimeLimit) return;
-            IsProjectilesTimeUp = true;
-        }
-
-        public void ZeroDestruction() {
-            IsDestructionTimeUp = false;
-            DestructionTimer = 0.0f;
-        }
-
-        public void ZeroBoost() {
-            IsBoostTimeUp = false;
-            _boostTimer = 0.0f;
-        }
-
-        public void ZeroMagnet() {
-            IsMagnetTimeUp = false;
-            MagnetTimer = 0.0f;
-        }
-
-        public void ZeroProjectiles() {
-            IsProjectilesTimeUp = false;
-            ProjectilesTimer = 0.0f;
-        }
-    }
-
     private Renderer _instructions1;
     private Renderer _instructions2;
     private Animator _pauseMenuAnim;
@@ -103,9 +18,31 @@ public class GameManagerScript : MonoBehaviour {
     private bool _isEscKeyReleased;
     private PlayerScriptWithAnimator _playerScript;
     private AudioManager _audioManager;
+    public GameObject BroadcastPrefab;
+    private GameObject _scoreCanvas;
+    public List<GameObject> Broadcasts;
+    public ScoreStreak ScoreStreakObj;
+
+    private static void Adjust3dGUIToWideScreen() {
+        GameObject.Find("3D GUI Parent").transform.position =
+            new Vector3(-0.9f, 0.2f, 0f);
+        GameObject.Find("Left Lose Limit").transform.position =
+            new Vector3(-14.5f, -11.3f, 0f);
+    }
+
+    private static bool closeTo(float a, float b, float tolerance) {
+        return Mathf.Abs(a - b) <= tolerance;
+    }
 
     // Use this for initialization
     private void Start() {
+        var ratio = (float) Screen.width / Screen.height;
+//        Debug.Log("Aspect ratio is " + ratio);
+        if (closeTo(ratio, 18 / 9f, 0.01f)) {
+            Adjust3dGUIToWideScreen();
+        }
+
+        _scoreCanvas = GameObject.Find("ScoreCanvas");
         _powerUpManager = GameObject.Find("Power Up Manager")
             .GetComponent<PowerUpManager>();
         _livesLeftText = GameObject.Find("ScoreCanvas/Lives Count")
@@ -132,7 +69,20 @@ public class GameManagerScript : MonoBehaviour {
         _audioManager = GameObject.Find("Audio Manager")
             .GetComponent<AudioManager>();
         _audioManager.FirstGameFrame = true;
+        Broadcasts = new List<GameObject>();
+        ScoreStreakObj = new ScoreStreak();
+        if (_playerScript == null) Debug.LogWarning("_scoreStreak is null");
 
+    }
+
+    public void BroadcastMessageOrScore(string message, bool isScore) {
+        var broadcast = Instantiate(BroadcastPrefab, Vector3.zero,
+            Quaternion.identity);
+        broadcast.transform.SetParent(_scoreCanvas.transform, false);
+        broadcast.GetComponent<TextMeshProUGUI>().text = message;
+        Broadcasts.Add(broadcast);
+        if (isScore)
+            broadcast.GetComponent<Animator>().Play("BroadcastScoreAnimation");
     }
 
     public void LoseLife() {
@@ -145,6 +95,7 @@ public class GameManagerScript : MonoBehaviour {
             return;
         }
 
+        ScoreStreakObj.StreakEnd();
         _livesLeftText.text = "X" + LivesLeft;
         _livesLeftTextAnim.Play("LivesCountTextPickupAnimation");
         _livesLeftKyoobParentAnim.Play("LivesCountKyoobParentPickupAnimation");
@@ -152,6 +103,7 @@ public class GameManagerScript : MonoBehaviour {
 
     public void AddLife() {
         if (Vibration.HasVibrator()) Vibration.Vibrate(20);
+        BroadcastMessageOrScore(" EXTRA LIFE", false);
         LivesLeft++;
         _livesLeftText.text = "X" + LivesLeft;
         _livesLeftTextAnim.Play("LivesCountTextPickupAnimation");
@@ -203,11 +155,22 @@ public class GameManagerScript : MonoBehaviour {
         if (Input.GetKeyUp(KeyCode.Escape)) {
             EscKeyReleased();
         }
+
+        if (Broadcasts.Count == 0) return;
+        foreach (var broadcast in Broadcasts) {
+            if (broadcast == null) continue;
+            if (broadcast.GetComponent<Animator>()
+                .GetCurrentAnimatorStateInfo(0).IsName("End")) {
+                Destroy(broadcast);
+            }
+        }
+
+        Broadcasts.RemoveAll(broadcast => broadcast == null);
     }
 
 //    private void OnApplicationPause(bool pauseStatus) {
 //        IsPaused = pauseStatus;
-//        ToggleInstructions();
+////        ToggleInstructions();
 //        if (!IsPaused) Pause();
 //        else Resume();
 //    }

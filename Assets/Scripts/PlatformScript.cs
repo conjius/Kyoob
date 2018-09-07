@@ -9,6 +9,7 @@ public class PlatformScript : MonoBehaviour {
     private ParticleSystem _platformDebrisParticleSystem;
     private GameManagerScript _gameManager;
     public bool IsDestroyed;
+    public bool IsDestroyable;
     private CameraShake _cameraShake;
     private AudioManager _audioManager;
 
@@ -42,15 +43,19 @@ public class PlatformScript : MonoBehaviour {
         gameObject.transform.parent.gameObject.GetComponent<Animator>()
             .Play("PlatformParentDestroyAnimation");
         if (Vibration.HasVibrator()) Vibration.Vibrate(20);
-        if (!_playerScript.IsDestructive && !_playerScript.IsBoosted &&
+        if (!_playerScript.IsDestructive && !IsDestroyable &&
+            !_playerScript.IsBoosted &&
             !_playerScript.IsAddingLosingLife) {
             _gameManager.LoseLife();
             _playerDebrisParticleSystem.Play(true);
             _playerParentAnim.Play("PlayerParentHitAnimation");
         }
 
+        if (IsDestroyable) _playerScript.AddToScore(50, false);
+        if (_playerScript.IsDestructive) _playerScript.AddToScore(20, false);
         var components = gameObject.GetComponents<Collider>();
         Destroy(components[0]);
+        Destroy(GetComponent<Light>());
         IsDestroyed = true;
     }
 
@@ -64,9 +69,12 @@ public class PlatformScript : MonoBehaviour {
         gameObject.transform.parent.gameObject.GetComponent<Animator>()
             .Play("PlatformParentDestroyAnimation");
         if (Vibration.HasVibrator()) Vibration.Vibrate(20);
+        if (IsDestroyable) _playerScript.AddToScore(50, false);
         _playerScript.AddToScore(20, false);
         IsDestroyed = true;
         var components = gameObject.GetComponents<Collider>();
         Destroy(components[0]);
+        Destroy(GetComponent<Light>());
     }
+
 }

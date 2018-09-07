@@ -15,8 +15,10 @@ public class PlatformManagerScript : MonoBehaviour {
     public float MaxSpawnY;
     public float MinSpawnY;
     public GameObject PlatformDebrisSystemPrefab;
+    public GameObject DestroyablePlatformDebrisSystemPrefab;
     public GameObject ParentPlatformPrefab;
     public GameObject PlatformPrefab;
+    public GameObject DestroyablePlatformPrefab;
     public List<GameObject> Platforms;
 
     private GameManagerScript _gameManagerScript;
@@ -76,6 +78,25 @@ public class PlatformManagerScript : MonoBehaviour {
         return x % n == 0 ? x : x + (n - x % n);
     }
 
+    private bool RandomizeDestroyableOrNot() {
+        switch (Random.Range(0, 11)) {
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+                return false;
+            case 10:
+                return true;
+            default: return true;
+        }
+    }
+
     private void SpawnPlatform() {
         var newPlatformY =
             RoundToMultipleOfN(DistanceBetweenPlatforms,
@@ -89,19 +110,26 @@ public class PlatformManagerScript : MonoBehaviour {
         }
 
         _lastSpawnedY = newPlatformY;
-        var newPlatformDebrisSystem = Instantiate(PlatformDebrisSystemPrefab,
+        var isDestroyable = RandomizeDestroyableOrNot();
+        var newPlatformDebrisSystem = Instantiate(
+            isDestroyable
+                ? DestroyablePlatformDebrisSystemPrefab
+                : PlatformDebrisSystemPrefab,
             new Vector3(SpawnPosX, newPlatformY, 0f), Quaternion.identity);
         var newParentPlatform = Instantiate(ParentPlatformPrefab, new Vector3(
                 SpawnPosX, newPlatformY, 0f), Quaternion.identity,
             newPlatformDebrisSystem.transform);
-        var newPlatform = Instantiate(PlatformPrefab, new Vector3(
-                SpawnPosX, newPlatformY, 0f), Quaternion.identity,
+        var newPlatform = Instantiate(
+            isDestroyable ? DestroyablePlatformPrefab : PlatformPrefab,
+            new Vector3(SpawnPosX, newPlatformY, 0f), Quaternion.identity,
             newParentPlatform.transform);
         newPlatformDebrisSystem.tag = "Platform";
         newPlatform.tag = "Platform";
         newParentPlatform.tag = "Platform";
         _lastSpawnedSize = Mathf.RoundToInt(Random.Range(MinPlatformSize,
             MaxPlatformSize));
+        if (isDestroyable)
+            newPlatform.GetComponent<Light>().range = _lastSpawnedSize + 4;
         newPlatform.transform.localScale = new Vector3(
             _lastSpawnedSize, newParentPlatform.transform.lossyScale.y,
             newParentPlatform.transform.lossyScale.z);
