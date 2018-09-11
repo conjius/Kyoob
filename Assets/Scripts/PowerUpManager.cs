@@ -12,7 +12,8 @@ public class PowerUpManager : MonoBehaviour {
             Destruction,
             Magnet,
             Projectiles,
-            ExtraLife
+            ExtraLife,
+            Slowdown
         }
 
         public Type _type;
@@ -27,31 +28,46 @@ public class PowerUpManager : MonoBehaviour {
             _color = color;
         }
 
-        public static Type RandomType() {
-            var rand = Random.Range(0, 16);
+        public static Type
+            RandomType(float curPlatformSpeed,
+                GameObject _playerAnimationParent) {
+            var rand = Random.Range(0, 22);
             switch (rand) {
                 case 0:
                 case 1:
                 case 2:
-                    return Type.BoostBack;
                 case 3:
+                    if (_playerAnimationParent.transform.position.x > 25.0f)
+                        return Type.BoostBack;
+                    return Type.BoostFwd;
                 case 4:
                 case 5:
-                    return Type.BoostFwd;
                 case 6:
                 case 7:
+                    if (_playerAnimationParent.transform.position.x < -7.0f)
+                        return Type.BoostFwd;
+                    return Type.BoostBack;
                 case 8:
-                    return Type.Destruction;
                 case 9:
                 case 10:
                 case 11:
-                    return Type.Magnet;
+                    return Type.Destruction;
                 case 12:
                 case 13:
                 case 14:
-                    return Type.Projectiles;
                 case 15:
+                    return Type.Magnet;
+                case 16:
+                case 17:
+                case 18:
+                case 19:
+                    return Type.Projectiles;
+                case 20:
                     return Type.ExtraLife;
+                case 21:
+                    if (curPlatformSpeed < 17.0f)
+                        return Type.ExtraLife;
+                    return Type.Slowdown;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -63,14 +79,17 @@ public class PowerUpManager : MonoBehaviour {
     public float DestructionPowerUpDuration;
     public float MagnetPowerUpDuration;
     public float ProjectilesPowerUpDuration;
+    public int SlowdownFactor;
     public Color BoostFwdColor;
     public Color BoostBackColor;
     public Color DestructionColor;
     public Color MagnetColor;
     public Color ProjectilesColor;
     public Color ExtraLifeColor;
+    public Color SlowDownColor;
     private int _distanceBetweenPlatforms;
     private PlatformManagerScript _platformManager;
+    private GameObject _playerAnimationParent;
     public GameObject PowerUpPrefab;
     public GameObject PowerUpParentPrefab;
     public List<PowerUp> PowerUps;
@@ -89,6 +108,8 @@ public class PowerUpManager : MonoBehaviour {
 
     // Use this for initialization
     private void Start() {
+        _playerAnimationParent =
+            GameObject.Find("GrandDaddy/Player Animation Parent");
         PowerUps = new List<PowerUp>();
         _coins = GameObject.Find("Coin Manager").GetComponent<CoinManager>()
             .Coins;
@@ -109,11 +130,10 @@ public class PowerUpManager : MonoBehaviour {
 
     private static int RoundToMultipleOfN(int n, float input) {
         var x = Mathf.RoundToInt(input);
-
         return x % n == 0 ? x : x + (n - x % n);
     }
 
-    public Color GetColorByType(PowerUp.Type type) {
+    private Color GetColorByType(PowerUp.Type type) {
         switch (type) {
             case PowerUp.Type.BoostFwd: return BoostFwdColor;
             case PowerUp.Type.BoostBack: return BoostBackColor;
@@ -121,6 +141,7 @@ public class PowerUpManager : MonoBehaviour {
             case PowerUp.Type.Magnet: return MagnetColor;
             case PowerUp.Type.Projectiles: return ProjectilesColor;
             case PowerUp.Type.ExtraLife: return ExtraLifeColor;
+            case PowerUp.Type.Slowdown: return SlowDownColor;
             default:
                 throw new ArgumentOutOfRangeException("type", type, null);
         }
@@ -134,6 +155,7 @@ public class PowerUpManager : MonoBehaviour {
             case PowerUp.Type.Magnet: return MagnetPowerUpDuration;
             case PowerUp.Type.Projectiles: return ProjectilesPowerUpDuration;
             case PowerUp.Type.ExtraLife: return 0.0f;
+            case PowerUp.Type.Slowdown: return 0.0f;
             default:
                 throw new ArgumentOutOfRangeException("type", type, null);
         }
@@ -151,14 +173,31 @@ public class PowerUpManager : MonoBehaviour {
             newPowerUpParentObj.transform);
         newPowerUpObj.tag = "PowerUp";
         newPowerUpParentObj.tag = "PowerUp";
-        var newType = PowerUp.RandomType();
+        var newType =
+            PowerUp.RandomType(_platformManager.PlatformSpeed,
+                _playerAnimationParent);
         newPowerUpObj.GetComponent<Renderer>().material.SetColor("_Color",
             GetColorByType(newType));
         var newPowerUpDuration = GetDurationByType(newType);
-        newPowerUpObj.GetComponent<Animator>().Play(
-            newType == PowerUp.Type.ExtraLife
-                ? "ExtraLifeAnimation"
-                : "PowerUpState");
+        switch (newType) {
+            case PowerUp.Type.ExtraLife:
+            case PowerUp.Type.Slowdown:
+                newPowerUpObj.GetComponent<Animator>()
+                    .Play("Flashing");
+                break;
+            case PowerUp.Type.BoostFwd:
+            case PowerUp.Type.BoostBack:
+            case PowerUp.Type.Destruction:
+            case PowerUp.Type.Magnet:
+            case PowerUp.Type.Projectiles:
+            default:
+                newPowerUpObj.GetComponent<Animator>()
+                    .Play("PowerUpState");
+                break;
+        }
+
+        newPowerUpParentObj.GetComponent<PowerUpScript>().SlowdownFactor =
+            SlowdownFactor;
         PowerUps.Add(new PowerUp(newType, newPowerUpDuration,
             newPowerUpParentObj,
             newPowerUpObj.GetComponent<Renderer>().material.color));
@@ -186,7 +225,7 @@ public class PowerUpManager : MonoBehaviour {
         if (_gameManagerScript.IsPaused) return;
         MovePowerUps();
         _timer += Time.deltaTime;
-        if (!(_timer >= _timeToNextSpawn)) return;
+        if (_timer < _timeToNextSpawn) return;
         _timer = 0.0f;
         _timeToNextSpawn = Random.Range(MinSpawnDelay, MaxSpawnDelay);
         SpawnPowerUp();

@@ -15,9 +15,20 @@ public class ScoreStreak {
         CurrentScoreStreak = 0;
         CurrentScoreTier = 0;
         TextArray = new string[] {
-            " Streak ended", " Not Bad!", " Well Done!", " Nice!", " Cool!",
-            " AWESOME!", " Killin' It!", " Wow!", " Impossible!", " DAYUMMM!",
-            " R U HUMAN?!", " WTF?!?!", " NO FREAKIN' WAY!", " STOP CHEATING!"
+            " Streak ended",
+            " 1K STREAK\n Not Bad!",
+            " 2K STREAK\n Well Done!",
+            " 3K STREAK\n Nice!",
+            " 4K STREAK\n Cool!",
+            " 5K STREAK\n AWESOME!",
+            " 6K STREAK\n Killin' It!",
+            " 7K STREAK\n Wow!",
+            " 8K STREAK\n Impossible!",
+            " 9K STREAK\n DAYUMMM!",
+            " 10K STREAK\n R U HUMAN?!",
+            " 11K STREAK\n WTF?!?!",
+            " 12K STREAK\n NO FREAKIN' WAY!",
+            " 13K STREAK\n STOP CHEATING!"
         };
     }
 

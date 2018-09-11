@@ -12,6 +12,7 @@ public class PlatformManagerScript : MonoBehaviour {
     public float InitialPlatformSpeed = 5.0f;
     public float PlatformSpeedAcceleration = 0.001f;
     public float PlatformSpeed = 5.0f;
+    public float SlowdownFactor;
     public float MaxSpawnY;
     public float MinSpawnY;
     public GameObject PlatformDebrisSystemPrefab;
@@ -22,6 +23,7 @@ public class PlatformManagerScript : MonoBehaviour {
     public List<GameObject> Platforms;
 
     private GameManagerScript _gameManagerScript;
+    private PlayerScriptWithAnimator _playerScript;
     private ParticleSystem _backgroundParticles;
     private float _timer;
     private float _timeBetweenSpawns = 0.3f;
@@ -37,6 +39,9 @@ public class PlatformManagerScript : MonoBehaviour {
         _gameManagerScript = GameObject
             .Find("GrandDaddy/Menu Parent/Menu/Game Manager")
             .GetComponent<GameManagerScript>();
+        _playerScript = GameObject
+            .Find("Player Animation Parent/Boost Stretcher/Player")
+            .GetComponent<PlayerScriptWithAnimator>();
         _timer = 0.0f;
         _templatePlatform = GameObject.Find("Start Platform");
         var instructions1 = GameObject.Find("instructions1");
@@ -175,11 +180,10 @@ public class PlatformManagerScript : MonoBehaviour {
     private void UpdatePlatformSpeed() {
         // platform speed increases linearly with score. +1 speed for every
         // 1/PlatformSpeedAcceleration points
-        var score = GameObject
-            .Find("Player Animation Parent/Boost Stretcher/Player")
-            .GetComponent<PlayerScriptWithAnimator>().Score;
+        var score = _playerScript.Score;
         PlatformSpeed =
-            PlatformSpeedAcceleration * score + InitialPlatformSpeed;
+            PlatformSpeedAcceleration * score + InitialPlatformSpeed -
+            SlowdownFactor;
         var backgroundParticlesMain = _backgroundParticles.main;
         backgroundParticlesMain.startSpeed = PlatformSpeed * 2;
     }

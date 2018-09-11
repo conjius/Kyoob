@@ -11,7 +11,7 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
 
     [Range(9.81f, 500.0f)] public float FallGravity;
     public float Score;
-
+    public float HighScore;
     public float MaxMagnetismDistance;
     public float MagnetismForce;
     private TextMeshProUGUI _scoreText;
@@ -48,7 +48,7 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
         if (!PlayerPrefs.HasKey("highscore")) {
             PlayerPrefs.SetInt("highscore", 0);
         }
-
+        HighScore = PlayerPrefs.GetInt("highscore");
         _gameManagerScript = GameObject
             .Find("GrandDaddy/Menu Parent/Menu/Game Manager")
             .GetComponent<GameManagerScript>();
@@ -192,7 +192,7 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
             _boostAnim.Play("BoostAnimation");
         }
 
-        _rb.velocity = new Vector3(-_boostSpeed, 0.0f, 0.0f);
+        _rb.velocity = new Vector3(-(_boostSpeed + 10.0f), 0.0f, 0.0f);
     }
 
     private void Unboost() {
@@ -213,13 +213,13 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
 
         _scoreStreak.IncreaseStreakAndTryAdvanceToNextTier(
             Mathf.RoundToInt(amount));
-        if (Mathf.RoundToInt(Score) < PlayerPrefs.GetInt("highscore")) return;
-        PlayerPrefs.SetInt("highscore", Mathf.RoundToInt(Score));
+        if (Mathf.RoundToInt(Score) <= HighScore) return;
+        HighScore = Mathf.RoundToInt(Score);
         if (!isTimeBonus)
             GameObject.Find("ScoreCanvas/High Score")
                 .GetComponent<Animator>()
                 .Play("HighScoreAnimation");
-        _highScoreText.text = "BEST: " + PlayerPrefs.GetInt("highscore");
+        _highScoreText.text = "BEST: " + HighScore;
     }
 
     private void UpdateTimeScore() {

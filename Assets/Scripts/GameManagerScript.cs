@@ -10,6 +10,8 @@ public class GameManagerScript : MonoBehaviour {
     private Animator _livesLeftTextAnim;
     private Animator _livesLeftKyoobParentAnim;
     private Animator _camAnim;
+    private ParticleSystem _backgroundParticles;
+    private ParticleSystem _backgroundParticlesBright;
     private PowerUpManager _powerUpManager;
     public int LivesLeft;
     private TextMeshProUGUI _livesLeftText;
@@ -42,6 +44,11 @@ public class GameManagerScript : MonoBehaviour {
             Adjust3dGUIToWideScreen();
         }
 
+        _backgroundParticles = GameObject.Find("Background Particle System")
+            .GetComponent<ParticleSystem>();
+        _backgroundParticlesBright = GameObject
+            .Find("Background Particle System Bright")
+            .GetComponent<ParticleSystem>();
         _scoreCanvas = GameObject.Find("ScoreCanvas");
         _powerUpManager = GameObject.Find("Power Up Manager")
             .GetComponent<PowerUpManager>();
@@ -72,7 +79,6 @@ public class GameManagerScript : MonoBehaviour {
         Broadcasts = new List<GameObject>();
         ScoreStreakObj = new ScoreStreak();
         if (_playerScript == null) Debug.LogWarning("_scoreStreak is null");
-
     }
 
     public void BroadcastMessageOrScore(string message, bool isScore) {
@@ -101,6 +107,11 @@ public class GameManagerScript : MonoBehaviour {
         _livesLeftKyoobParentAnim.Play("LivesCountKyoobParentPickupAnimation");
     }
 
+    public void Slowdown() {
+        if (Vibration.HasVibrator()) Vibration.Vibrate(20);
+        BroadcastMessageOrScore(" SLOWDOWN", false);
+    }
+
     public void AddLife() {
         if (Vibration.HasVibrator()) Vibration.Vibrate(20);
         BroadcastMessageOrScore(" EXTRA LIFE", false);
@@ -113,6 +124,8 @@ public class GameManagerScript : MonoBehaviour {
     private void RestartLevel() {
         _audioManager.StopSounds();
         PlayerPrefs.SetInt("lastScore", Mathf.RoundToInt(_playerScript.Score));
+        PlayerPrefs.SetInt("highscore",
+            Mathf.RoundToInt(_playerScript.HighScore));
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -126,11 +139,17 @@ public class GameManagerScript : MonoBehaviour {
     }
 
     public void Resume() {
+        _audioManager.ResumeAll();
+        _backgroundParticlesBright.Play();
+        _backgroundParticles.Play();
         ToggleInstructions();
         _pauseMenuAnim.Play("ResumeAnimation");
     }
 
     private void Pause() {
+        _audioManager.PauseAll();
+        _backgroundParticlesBright.Pause();
+        _backgroundParticles.Pause();
         _pauseMenuAnim.Play("PauseAnimation");
         ToggleInstructions();
     }

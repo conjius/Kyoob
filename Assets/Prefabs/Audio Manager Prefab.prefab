@@ -156,8 +156,17 @@ MonoBehaviour:
     Clip: {fileID: 8300000, guid: f37eb9b5fab6d68418e39a6d3cbdf887, type: 3}
     Volume: 0.6
     VolumeVariance: 0
-    Pitch: 1.7
+    Pitch: 1.3
     PitchVariance: 0.1
+    Loop: 0
+    MixerGroup: {fileID: 0}
+    Source: {fileID: 0}
+  - Name: Slowdown
+    Clip: {fileID: 8300000, guid: 9f546dbd9fe5d9d40b8d2d51a15007a3, type: 3}
+    Volume: 0.6
+    VolumeVariance: 0.1
+    Pitch: 0.8
+    PitchVariance: 0.2
     Loop: 0
     MixerGroup: {fileID: 0}
     Source: {fileID: 0}

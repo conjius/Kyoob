@@ -21,7 +21,7 @@ public class CoinScript : MonoBehaviour {
     }
 
     private void OnTriggerEnter(Collider other) {
-        if (other.gameObject.CompareTag("Platform")) {
+        if (other.gameObject.CompareTag("PowerUp")) {
             for (var i = _coins.Count - 1; i >= 0; i--) {
                 if (_coins[i].GetComponent<Collider>() == _collider)
                     _coins.RemoveAt(i);

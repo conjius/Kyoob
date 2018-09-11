@@ -5,6 +5,7 @@ using UnityEngine;
 public class PowerUpScript : MonoBehaviour {
     private GameObject _player;
     private PlayerScriptWithAnimator _playerScript;
+    private PlatformManagerScript _platformManager;
     private AudioManager _audioManager;
     private GameManagerScript _gameManager;
     private Animator _anim;
@@ -17,17 +18,19 @@ public class PowerUpScript : MonoBehaviour {
     private GameTimer _timer;
     private ParticleSystem _magnetismParticles;
     private ParticleSystem _projectiles;
-
     private List<PowerUpManager.PowerUp> _powerUps;
-
     private PowerUpManager.PowerUp.Type _type;
     private bool _hasVibrator;
+
+    public float SlowdownFactor;
 
     // Use this for initialization
     private void Start() {
         _hasVibrator = Vibration.HasVibrator();
         _player =
             GameObject.Find("Player Animation Parent/Boost Stretcher/Player");
+        _platformManager = GameObject.Find("Platform Manager")
+            .GetComponent<PlatformManagerScript>();
         _anim = _player.GetComponent<Animator>();
         _parentAnim =
             GameObject.Find("Player Animation Parent").GetComponent<Animator>();
@@ -109,6 +112,12 @@ public class PowerUpScript : MonoBehaviour {
                 _gameManager.AddLife();
                 _camAnim.Play("AddLifeAnimation");
                 _parentAnim.Play("AddLifeAnimation");
+                break;
+            case PowerUpManager.PowerUp.Type.Slowdown:
+                _audioManager.Play("Slowdown");
+                _camAnim.Play("SlowdownAnimation");
+                _gameManager.Slowdown();
+                _platformManager.SlowdownFactor += SlowdownFactor;
                 break;
             default:
                 throw new ArgumentOutOfRangeException();

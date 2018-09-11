@@ -1,5 +1,6 @@
 using UnityEngine.Audio;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -45,6 +46,24 @@ public class AudioManager : MonoBehaviour {
 
         if (s.Source.isPlaying) s.Source.Stop();
         s.Source.PlayOneShot(s.Clip, 1f);
+    }
+
+    public void PauseAll() {
+        foreach (var s in Sounds) {
+            if (s == null) continue;
+            if (!s.Source.isPlaying) continue;
+            s.Source.Pause();
+            s.IsPaused = true;
+        }
+    }
+
+    public void ResumeAll() {
+        foreach (var s in Sounds) {
+            if (s == null) continue;
+            if (!s.IsPaused) continue;
+            s.Source.UnPause();
+            s.IsPaused = false;
+        }
     }
 
     public void StopSounds() {
