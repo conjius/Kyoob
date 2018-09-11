@@ -2,31 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bdfb721a-f1b5-4875-b522-9a6d59f91c7e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Kyoob/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kyoob/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animations/Broadcast/BroadCastMessageAnimation.anim" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Broadcast/BroadCastMessageAnimation.anim" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Animations/Camera/AddLifeAnimation.anim" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Camera/AddLifeAnimation.anim" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Animations/Camera/BoostBackAnimation.anim" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Camera/BoostBackAnimation.anim" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Animations/Camera/BoostFwdAnimation.anim" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Camera/BoostFwdAnimation.anim" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animations/Camera/CameraAC.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Camera/CameraAC.controller" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Animations/Camera/DestructionAnimation.anim" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Camera/DestructionAnimation.anim" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Animations/Camera/LoseLifeAnimation.anim" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Camera/LoseLifeAnimation.anim" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Animations/Camera/MagnetismAnimation.anim" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Camera/MagnetismAnimation.anim" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Animations/Camera/ProjectilesAnimation.anim" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Camera/ProjectilesAnimation.anim" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animations/Powerups/PowerUpAnimatorController.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Powerups/PowerUpAnimatorController.controller" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/PowerUp.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/PowerUp.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Audio Manager Prefab.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Audio Manager Prefab.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Powerup Parent Prefab.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Powerup Parent Prefab.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animations/Camera/SlowdownAnimation.anim" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Camera/SlowdownAnimation.anim" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/level.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/level.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/AudioManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/AudioManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/CoinScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/CoinScript.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GameManagerScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GameManagerScript.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PlatformManagerScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PlatformManagerScript.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PlayerScriptWithAnimator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PlayerScriptWithAnimator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PowerUpManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PowerUpManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/PowerUpScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PowerUpScript.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/ScoreStreak.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/ScoreStreak.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Sound.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Sound.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -49,12 +34,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="cs" value="14463" />
+          <entry key="cs" value="14597" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="C#" value="14463" />
+          <entry key="C#" value="14597" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -70,7 +55,7 @@
     </session>
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.4675232">
+    <splitter split-orientation="horizontal" split-proportion="0.65591395">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="false">
@@ -105,29 +90,29 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="false">
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/Assets/Scripts/PowerUpScript.cs">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="878">
-                  <caret line="119" column="58" selection-start-line="119" selection-start-column="58" selection-end-line="119" selection-end-column="58" />
+                <state relative-caret-position="668">
+                  <caret line="114" column="22" lean-forward="true" selection-start-line="114" selection-start-column="22" selection-end-line="114" selection-end-column="22" />
                   <folding>
-                    <marker date="1536595545577" expanded="false" signature="6:66" ph="..." />
-                    <marker date="1536595545577" expanded="true" signature="111:5927" ph="{...}" />
-                    <marker date="1536595545577" expanded="true" signature="926:2773" ph="{...}" />
-                    <marker date="1536595545577" expanded="true" signature="2686:2767" ph="{...}" />
-                    <marker date="1536595545577" expanded="true" signature="2823:5925" ph="{...}" />
-                    <marker date="1536595545577" expanded="true" signature="2908:5533" ph="{...}" />
-                    <marker date="1536595545577" expanded="true" signature="5639:5781" ph="{...}" />
+                    <marker date="1536666401937" expanded="false" signature="6:66" ph="..." />
+                    <marker date="1536666401937" expanded="true" signature="111:6088" ph="{...}" />
+                    <marker date="1536666401937" expanded="true" signature="926:2773" ph="{...}" />
+                    <marker date="1536666401937" expanded="true" signature="2686:2767" ph="{...}" />
+                    <marker date="1536666401937" expanded="true" signature="2823:6086" ph="{...}" />
+                    <marker date="1536666401937" expanded="true" signature="2908:5694" ph="{...}" />
+                    <marker date="1536666401937" expanded="true" signature="5800:5942" ph="{...}" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Assets/Scripts/GameTimer.cs">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="256">
-                  <caret line="16" column="36" selection-start-line="16" selection-start-column="36" selection-end-line="16" selection-end-column="36" />
+                <state relative-caret-position="272">
+                  <caret line="17" column="36" selection-start-line="17" selection-start-column="36" selection-end-line="17" selection-end-column="36" />
                   <folding>
                     <marker date="1536311855388" expanded="true" signature="43:2314" ph="{...}" />
                     <marker date="1536311855388" expanded="true" signature="595:1055" ph="{...}" />
@@ -151,8 +136,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/Assets/Scripts/GameManagerScript.cs">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="225">
-                  <caret line="160" column="26" selection-start-line="160" selection-start-column="26" selection-end-line="160" selection-end-column="26" />
+                <state relative-caret-position="2017">
+                  <caret line="176" selection-start-line="176" selection-end-line="176" />
                   <folding>
                     <marker date="1536664889617" expanded="false" signature="6:100" ph="..." />
                     <marker date="1536664889617" expanded="true" signature="149:7058" ph="{...}" />
@@ -433,13 +418,13 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/GameTimer.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/CoinScript.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/PlatformManagerScript.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/PowerUpScript.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/ScoreStreak.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Sound.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/AudioManager.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/PowerUpManager.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/PlayerScriptWithAnimator.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/GameManagerScript.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/PowerUpScript.cs" />
       </list>
     </option>
   </component>
@@ -540,12 +525,12 @@
       <workItem from="1536558095077" duration="3351000" />
       <workItem from="1536562784164" duration="332000" />
       <workItem from="1536595339149" duration="4926000" />
-      <workItem from="1536662709047" duration="2382000" />
+      <workItem from="1536662709047" duration="3411000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="115830000" />
+    <option name="totallyTimeSpent" value="116859000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -777,22 +762,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Scripts/PowerUpScript.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="878">
-          <caret line="119" column="58" selection-start-line="119" selection-start-column="58" selection-end-line="119" selection-end-column="58" />
-          <folding>
-            <marker date="1536595545577" expanded="false" signature="6:66" ph="..." />
-            <marker date="1536595545577" expanded="true" signature="111:5927" ph="{...}" />
-            <marker date="1536595545577" expanded="true" signature="926:2773" ph="{...}" />
-            <marker date="1536595545577" expanded="true" signature="2686:2767" ph="{...}" />
-            <marker date="1536595545577" expanded="true" signature="2823:5925" ph="{...}" />
-            <marker date="1536595545577" expanded="true" signature="2908:5533" ph="{...}" />
-            <marker date="1536595545577" expanded="true" signature="5639:5781" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Assets/Scripts/PlatformManagerScript.cs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="878">
@@ -819,25 +788,6 @@
             <marker date="1536558551899" expanded="true" signature="6955:7377" ph="{...}" />
             <marker date="1536558551899" expanded="true" signature="6965:7078" ph="/* platform speed increases linearly with score. +1 speed for every ... */" />
             <marker date="1536558551899" expanded="true" signature="7443:7636" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Scripts/GameTimer.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
-          <caret line="16" column="36" selection-start-line="16" selection-start-column="36" selection-end-line="16" selection-end-column="36" />
-          <folding>
-            <marker date="1536311855388" expanded="true" signature="43:2314" ph="{...}" />
-            <marker date="1536311855388" expanded="true" signature="595:1055" ph="{...}" />
-            <marker date="1536311855388" expanded="true" signature="1085:1247" ph="{...}" />
-            <marker date="1536311855388" expanded="true" signature="1283:1472" ph="{...}" />
-            <marker date="1536311855388" expanded="true" signature="1503:1667" ph="{...}" />
-            <marker date="1536311855388" expanded="true" signature="1703:1892" ph="{...}" />
-            <marker date="1536311855388" expanded="true" signature="1928:2005" ph="{...}" />
-            <marker date="1536311855388" expanded="true" signature="2035:2101" ph="{...}" />
-            <marker date="1536311855388" expanded="true" signature="2132:2199" ph="{...}" />
-            <marker date="1536311855388" expanded="true" signature="2235:2312" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -887,10 +837,29 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Scripts/GameTimer.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="17" column="36" selection-start-line="17" selection-start-column="36" selection-end-line="17" selection-end-column="36" />
+          <folding>
+            <marker date="1536311855388" expanded="true" signature="43:2314" ph="{...}" />
+            <marker date="1536311855388" expanded="true" signature="595:1055" ph="{...}" />
+            <marker date="1536311855388" expanded="true" signature="1085:1247" ph="{...}" />
+            <marker date="1536311855388" expanded="true" signature="1283:1472" ph="{...}" />
+            <marker date="1536311855388" expanded="true" signature="1503:1667" ph="{...}" />
+            <marker date="1536311855388" expanded="true" signature="1703:1892" ph="{...}" />
+            <marker date="1536311855388" expanded="true" signature="1928:2005" ph="{...}" />
+            <marker date="1536311855388" expanded="true" signature="2035:2101" ph="{...}" />
+            <marker date="1536311855388" expanded="true" signature="2132:2199" ph="{...}" />
+            <marker date="1536311855388" expanded="true" signature="2235:2312" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Assets/Scripts/GameManagerScript.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="160" column="26" selection-start-line="160" selection-start-column="26" selection-end-line="160" selection-end-column="26" />
+        <state relative-caret-position="2017">
+          <caret line="176" selection-start-line="176" selection-end-line="176" />
           <folding>
             <marker date="1536664889617" expanded="false" signature="6:100" ph="..." />
             <marker date="1536664889617" expanded="true" signature="149:7058" ph="{...}" />
@@ -916,6 +885,22 @@
             <marker date="1536664889617" expanded="true" signature="6571:6793" ph="{...}" />
             <marker date="1536664889617" expanded="true" signature="6732:6783" ph="{...}" />
             <marker date="1536664889617" expanded="true" signature="6864:7056" ph="/* private void OnApplicationPause(bool pauseStatus) { ... */" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Scripts/PowerUpScript.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="668">
+          <caret line="114" column="22" lean-forward="true" selection-start-line="114" selection-start-column="22" selection-end-line="114" selection-end-column="22" />
+          <folding>
+            <marker date="1536666401937" expanded="false" signature="6:66" ph="..." />
+            <marker date="1536666401937" expanded="true" signature="111:6088" ph="{...}" />
+            <marker date="1536666401937" expanded="true" signature="926:2773" ph="{...}" />
+            <marker date="1536666401937" expanded="true" signature="2686:2767" ph="{...}" />
+            <marker date="1536666401937" expanded="true" signature="2823:6086" ph="{...}" />
+            <marker date="1536666401937" expanded="true" signature="2908:5694" ph="{...}" />
+            <marker date="1536666401937" expanded="true" signature="5800:5942" ph="{...}" />
           </folding>
         </state>
       </provider>

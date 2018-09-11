@@ -70,7 +70,7 @@ public class PowerUpScript : MonoBehaviour {
                 _audioManager.Play("BoostFwd");
                 if (!_playerScript.IsAddingLosingLife &&
                     !_playerScript.IsRespawning)
-                    _camAnim.Play("BoostFwdAnimation");
+                    _camAnim.CrossFadeInFixedTime("BoostFwdAnimation", 0.18f);
                 _playerScript.IsBoosted = true;
                 _playerScript.IsFwdBoost = true;
                 break;
@@ -78,13 +78,13 @@ public class PowerUpScript : MonoBehaviour {
                 _audioManager.Play("BoostBack");
                 if (!_playerScript.IsAddingLosingLife &&
                     !_playerScript.IsRespawning)
-                    _camAnim.Play("BoostBackAnimation");
+                    _camAnim.CrossFadeInFixedTime("BoostBackAnimation", 0.18f);
                 _playerScript.IsBoosted = true;
                 _playerScript.IsFwdBoost = false;
                 break;
             case PowerUpManager.PowerUp.Type.Destruction:
                 _audioManager.Play("Destruction");
-                _camAnim.Play("DestructionAnimation");
+                _camAnim.CrossFadeInFixedTime("DestructionAnimation", 0.18f);
                 _playerScript.IsDestructive = true;
                 _anim.Play("IdleDestructionStart");
                 _parentAnim.Play("PlayerParentIdleAnimationWithDestruction");
@@ -93,7 +93,7 @@ public class PowerUpScript : MonoBehaviour {
                 break;
             case PowerUpManager.PowerUp.Type.Magnet:
                 _audioManager.Play("Magnetism");
-                _camAnim.Play("MagnetismAnimation");
+                _camAnim.CrossFadeInFixedTime("MagnetismAnimation", 0.18f);
                 _playerScript.IsMagnetising = true;
                 _magnetismParticles.Play(true);
                 _magnetismBarAnim.Play("Turn On");
@@ -101,7 +101,7 @@ public class PowerUpScript : MonoBehaviour {
                 break;
             case PowerUpManager.PowerUp.Type.Projectiles:
                 _audioManager.Play("Projectiles");
-                _camAnim.Play("ProjectilesAnimation");
+                _camAnim.CrossFadeInFixedTime("ProjectilesAnimation", 0.18f);
                 _playerScript.IsProjectiles = true;
                 _projectiles.Play(true);
                 _projectilesBarAnim.Play("Turn On");
@@ -110,12 +110,12 @@ public class PowerUpScript : MonoBehaviour {
             case PowerUpManager.PowerUp.Type.ExtraLife:
                 _audioManager.Play("AddLife");
                 _gameManager.AddLife();
-                _camAnim.Play("AddLifeAnimation");
+                _camAnim.CrossFadeInFixedTime("AddLifeAnimation", 0.18f);
                 _parentAnim.Play("AddLifeAnimation");
                 break;
             case PowerUpManager.PowerUp.Type.Slowdown:
                 _audioManager.Play("Slowdown");
-                _camAnim.Play("SlowdownAnimation");
+                _camAnim.CrossFadeInFixedTime("SlowdownAnimation", 0.18f);
                 _gameManager.Slowdown();
                 _platformManager.SlowdownFactor += SlowdownFactor;
                 break;
