@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class PlayerScriptWithAnimator : MonoBehaviour {
     [Range(0.0f, 100.0f)] public float JumpForce = 50;
@@ -13,16 +12,19 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
     public float Score;
     public float HighScore;
     public float MaxMagnetismDistance;
+    public float MaxExplosionInfluenceDistance;
     public float MagnetismForce;
     private TextMeshProUGUI _scoreText;
     private TextMeshProUGUI _highScoreText;
     private TextMeshProUGUI _lastScoreText;
     private GameManagerScript _gameManagerScript;
+    private PlatformManagerScript _platformManager;
     private GameTimer _timer;
     private ScoreStreak _scoreStreak;
     private ParticleSystem _magnetismParticles;
     private ParticleSystem _projectilesParticles;
     private ParticleSystem _debrisParticles;
+    private ParticleSystem _explosionParticles;
     private Transform _parent;
     private Rigidbody _rb;
     private Animator _anim;
@@ -31,11 +33,15 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
     private Animator _magnetismBarAnim;
     private Animator _destructionBarAnim;
     private Animator _projectilesBarAnim;
+    private Animator _magnetismLightAnim;
+    private Animator _explosionBarAnim;
     private List<GameObject> _coins;
     private bool _isJumpKeyReleased;
     public bool IsBoosted;
     public bool IsFirstFrameOfBoost;
     public bool IsDestructive;
+    public bool IsAboutToExplode;
+    public bool IsExploding;
     public bool IsMagnetising;
     public bool IsProjectiles;
     public bool IsFwdBoost;
@@ -44,10 +50,16 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
     private float _boostSpeed;
 
     // Use this for initialization
+
+    private void Awake() {
+        _explosionParticles = gameObject.GetComponent<ParticleSystem>();
+        _explosionParticles.Stop(true);
+    }
     private void Start() {
         if (!PlayerPrefs.HasKey("highscore")) {
             PlayerPrefs.SetInt("highscore", 0);
         }
+
         HighScore = PlayerPrefs.GetInt("highscore");
         _gameManagerScript = GameObject
             .Find("GrandDaddy/Menu Parent/Menu/Game Manager")
@@ -65,6 +77,7 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
             GameObject.Find("Player Animation Parent/Debris Particle System")
                 .GetComponent<ParticleSystem>();
         _debrisParticles.Stop(true);
+
         _parent = gameObject.transform.parent.gameObject
             .GetComponentInParent<Transform>();
         Score = 0.0f;
@@ -97,12 +110,22 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
             .GetComponent<Animator>();
         _projectilesBarAnim = GameObject.Find("Projectiles Bar Parent")
             .GetComponent<Animator>();
+        _explosionBarAnim = GameObject.Find("Explosion Bar Parent")
+            .GetComponent<Animator>();
+        _magnetismLightAnim = GameObject
+            .Find("Player Animation Parent/Magnetism Player Light")
+            .GetComponent<Animator>();
+
         _coins = GameObject.Find("Coin Manager").GetComponent<CoinManager>()
             .Coins;
+        _platformManager = GameObject.Find("Platform Manager")
+            .GetComponent<PlatformManagerScript>();
         _isJumpKeyReleased = true;
         IsBoosted = false;
         IsFirstFrameOfBoost = true;
         IsDestructive = false;
+        IsAboutToExplode = false;
+        IsExploding = false;
         IsMagnetising = false;
         IsProjectiles = false;
         IsRespawning = false;
@@ -115,7 +138,7 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
 
     private void JumpKeyPressed() {
         if (!_isJumpKeyReleased) return;
-        if (IsRespawning) return;
+        if (IsRespawning || IsExploding) return;
         _anim.Play(IsDestructive
             ? "JumpAnimationWithDestruction"
             : "JumpAnimation");
@@ -178,7 +201,7 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
     }
 
     private void BoostFwd() {
-        if (IsFirstFrameOfBoost) {
+        if (IsFirstFrameOfBoost && !IsAboutToExplode) {
             IsFirstFrameOfBoost = false;
             _boostAnim.Play("BoostAnimation");
         }
@@ -187,7 +210,7 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
     }
 
     private void BoostBack() {
-        if (IsFirstFrameOfBoost) {
+        if (IsFirstFrameOfBoost && !IsAboutToExplode) {
             IsFirstFrameOfBoost = false;
             _boostAnim.Play("BoostAnimation");
         }
@@ -247,7 +270,7 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
         _timer.ZeroDestruction();
         IsDestructive = false;
         _anim.Play("IdleDestructionEnd");
-        _parentAnim.Play("Idle");
+        if (!IsAboutToExplode && !IsExploding) _parentAnim.Play("Idle");
         _destructionBarAnim.Play("Turn Off");
     }
 
@@ -258,6 +281,7 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
             _timer.ZeroMagnet();
             PowerUpManager.StopMagnets();
             _magnetismParticles.Stop(true);
+            _magnetismLightAnim.Play("MagnetismPlayerLightTurnOff");
             _magnetismBarAnim.Play("Turn Off");
         }
 
@@ -288,7 +312,8 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
 
     public void Respawn() {
         _parent.transform.parent.position = new Vector3(0.0f, 1.5f, 0.0f);
-        _parentAnim.Play("PlayerParentRespawnAnimation");
+        if (!IsAboutToExplode && !IsExploding)
+            _parentAnim.Play("PlayerParentRespawnAnimation");
     }
 
 
@@ -302,6 +327,39 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
         _projectilesBarAnim.Play("Turn Off");
     }
 
+    private void Explode() {
+        _explosionParticles.Play();
+        IsExploding = true;
+        IsAboutToExplode = false;
+        foreach (var platform in _platformManager.Platforms) {
+            if (platform == null) {
+                continue;
+            }
+
+            var distance = Vector3.Distance(
+                platform.transform.position,
+                gameObject.transform.position);
+            if (platform.transform.position.x >= -25.0f &&
+                distance <= MaxExplosionInfluenceDistance) {
+                platform.GetComponentInChildren<PlatformScript>()
+                    .OnTriggerEnter(gameObject.GetComponent<Collider>());
+            }
+        }
+
+        _parentAnim.Play("PlayerParentExplosionAnimation");
+    }
+
+    private void ApplyExplosion() {
+//        _projectilesParticles.transform.position = transform.position;
+        _timer.TickExplosion();
+        if (!_timer.IsExplosionTimeUp) return;
+        IsAboutToExplode = false;
+        _timer.ZeroExplosion();
+//        _explosionParticles.Stop(true);
+        _explosionBarAnim.Play("Turn Off");
+        Explode();
+    }
+
     // Update is called once per frame
     private void Update() {
         if (_gameManagerScript.IsPaused) {
@@ -313,6 +371,7 @@ public class PlayerScriptWithAnimator : MonoBehaviour {
         if (IsDestructive) ApplyDestruction();
         if (IsMagnetising) ApplyMagnetism();
         if (IsProjectiles) ApplyProjectiles();
+        if (IsAboutToExplode) ApplyExplosion();
         GravityTweak();
         GetInputAndApplyMovement();
     }

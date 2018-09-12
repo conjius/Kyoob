@@ -16,10 +16,14 @@ public class GameTimer {
     public float ProjectilesTimer;
     public float ProjectilesTimeLimit;
     public bool IsProjectilesTimeUp;
+    
+    public float ExplosionTimer;
+    public float ExplosionTimeLimit;
+    public bool IsExplosionTimeUp;
 
 
     public GameTimer(float boostTimeLimit, float destructionTimeLimit,
-        float magnetTimeLimit, float projectilesTimeLimit) {
+        float magnetTimeLimit, float projectilesTimeLimit, float explosionTimeLimit) {
         _boostTimer = 0.0f;
         _boostTimeLimit = boostTimeLimit;
         IsBoostTimeUp = false;
@@ -35,6 +39,10 @@ public class GameTimer {
         ProjectilesTimer = 0.0f;
         ProjectilesTimeLimit = projectilesTimeLimit;
         IsProjectilesTimeUp = false;
+        
+        ExplosionTimer = 0.0f;
+        ExplosionTimeLimit = explosionTimeLimit;
+        IsExplosionTimeUp = false;
     }
 
     public void TickBoost() {
@@ -63,6 +71,18 @@ public class GameTimer {
         ProjectilesTimer += Time.deltaTime;
         if (ProjectilesTimer < ProjectilesTimeLimit) return;
         IsProjectilesTimeUp = true;
+    }
+    
+    public void TickExplosion() {
+        if (IsExplosionTimeUp) return;
+        ExplosionTimer += Time.deltaTime;
+        if (ExplosionTimer < ExplosionTimeLimit) return;
+        IsExplosionTimeUp = true;
+    }
+    
+    public void ZeroExplosion() {
+        IsExplosionTimeUp = false;
+        ExplosionTimer = 0.0f;
     }
 
     public void ZeroDestruction() {

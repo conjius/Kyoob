@@ -12,6 +12,10 @@ public class GameManagerScript : MonoBehaviour {
     private Animator _camAnim;
     private ParticleSystem _backgroundParticles;
     private ParticleSystem _backgroundParticlesBright;
+    private ParticleSystem _magnetismParticles;
+    private ParticleSystem _projectilesParticles;
+    private ParticleSystem _playerDebrisParticles;
+    private ParticleSystem _playerExplosionParticles;
     private PowerUpManager _powerUpManager;
     public int LivesLeft;
     private TextMeshProUGUI _livesLeftText;
@@ -49,6 +53,18 @@ public class GameManagerScript : MonoBehaviour {
         _backgroundParticlesBright = GameObject
             .Find("Background Particle System Bright")
             .GetComponent<ParticleSystem>();
+        _magnetismParticles = GameObject
+            .Find("GrandDaddy/Player Animation Parent/Magnet Particle System")
+            .GetComponent<ParticleSystem>();
+        _projectilesParticles = GameObject
+            .Find("GrandDaddy/Projectiles Particle System")
+            .GetComponent<ParticleSystem>();
+        _playerExplosionParticles = GameObject
+            .Find("GrandDaddy/Player Animation Parent/Boost Stretcher/Player")
+            .GetComponent<ParticleSystem>();
+        _playerDebrisParticles = GameObject
+            .Find("GrandDaddy/Player Animation Parent/Debris Particle System")
+            .GetComponent<ParticleSystem>();
         _scoreCanvas = GameObject.Find("ScoreCanvas");
         _powerUpManager = GameObject.Find("Power Up Manager")
             .GetComponent<PowerUpManager>();
@@ -63,7 +79,8 @@ public class GameManagerScript : MonoBehaviour {
         Timer = new GameTimer(_powerUpManager.BoostPowerUpDuration,
             _powerUpManager.DestructionPowerUpDuration,
             _powerUpManager.MagnetPowerUpDuration,
-            _powerUpManager.ProjectilesPowerUpDuration);
+            _powerUpManager.ProjectilesPowerUpDuration,
+            _powerUpManager.ExplosionPowerUpDuration);
         _instructions1 =
             GameObject.Find("instructions1").GetComponent<Renderer>();
         _instructions2 =
@@ -94,7 +111,12 @@ public class GameManagerScript : MonoBehaviour {
     public void LoseLife() {
         _audioManager.Play("LoseLife");
         if (Vibration.HasVibrator()) Vibration.Vibrate(20);
-        _camAnim.Play("LoseLifeAnimation");
+        if (!_camAnim.GetCurrentAnimatorStateInfo(0)
+            .IsName("ExplosionAnimation")) {
+            if (!_playerScript.IsExploding && !_playerScript.IsAboutToExplode)
+                _camAnim.Play("LoseLifeAnimation");
+        }
+
         LivesLeft--;
         if (LivesLeft < 1) {
             RestartLevel();
@@ -142,6 +164,11 @@ public class GameManagerScript : MonoBehaviour {
         _audioManager.ResumeAll();
         _backgroundParticlesBright.Play();
         _backgroundParticles.Play();
+        if (_magnetismParticles.isPaused) _magnetismParticles.Play();
+        if (_projectilesParticles.isPaused) _projectilesParticles.Play();
+        if (_playerDebrisParticles.isPaused) _playerDebrisParticles.Play();
+        if (_playerExplosionParticles.isPaused)
+            _playerExplosionParticles.Play();
         ToggleInstructions();
         _pauseMenuAnim.Play("ResumeAnimation");
     }
@@ -150,6 +177,11 @@ public class GameManagerScript : MonoBehaviour {
         _audioManager.PauseAll();
         _backgroundParticlesBright.Pause();
         _backgroundParticles.Pause();
+        if (_magnetismParticles.isPlaying) _magnetismParticles.Pause();
+        if (_projectilesParticles.isPlaying) _projectilesParticles.Pause();
+        if (_playerDebrisParticles.isPlaying) _playerDebrisParticles.Pause();
+        if (_playerExplosionParticles.isPlaying)
+            _playerExplosionParticles.Pause();
         _pauseMenuAnim.Play("PauseAnimation");
         ToggleInstructions();
     }

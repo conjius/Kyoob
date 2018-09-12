@@ -52,8 +52,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MixerGroup: {fileID: 0}
+  IsMuted: 0
   Sounds:
   - Name: Coin
+    IsPaused: 0
     Clip: {fileID: 8300000, guid: 0f428d28d088e86499ebe58946bf85e5, type: 3}
     Volume: 0.5
     VolumeVariance: 0.2
@@ -63,6 +65,7 @@ MonoBehaviour:
     MixerGroup: {fileID: 0}
     Source: {fileID: 0}
   - Name: BoostFwd
+    IsPaused: 0
     Clip: {fileID: 8300000, guid: 20eb9f2c4b5b92648aeec22c9ab7f5a4, type: 3}
     Volume: 0.6
     VolumeVariance: 0.2
@@ -72,6 +75,7 @@ MonoBehaviour:
     MixerGroup: {fileID: 0}
     Source: {fileID: 0}
   - Name: BoostBack
+    IsPaused: 0
     Clip: {fileID: 8300000, guid: 0515b516f16872140bf49f5143ae20e6, type: 3}
     Volume: 0.6
     VolumeVariance: 0.2
@@ -81,6 +85,7 @@ MonoBehaviour:
     MixerGroup: {fileID: 0}
     Source: {fileID: 0}
   - Name: Magnetism
+    IsPaused: 0
     Clip: {fileID: 8300000, guid: eb257656bc774f04692be12ce6d3e20b, type: 3}
     Volume: 0.4
     VolumeVariance: 0.1
@@ -90,6 +95,7 @@ MonoBehaviour:
     MixerGroup: {fileID: 0}
     Source: {fileID: 0}
   - Name: PlatformDestruction
+    IsPaused: 0
     Clip: {fileID: 8300000, guid: c828bee2afa768c43befab152f4fe4c6, type: 3}
     Volume: 0.6
     VolumeVariance: 0.1
@@ -99,6 +105,7 @@ MonoBehaviour:
     MixerGroup: {fileID: 0}
     Source: {fileID: 0}
   - Name: LoseLife
+    IsPaused: 0
     Clip: {fileID: 8300000, guid: 9a6f945a3dd53964eb8db4ad7458e095, type: 3}
     Volume: 0.3
     VolumeVariance: 0.2
@@ -108,6 +115,7 @@ MonoBehaviour:
     MixerGroup: {fileID: 0}
     Source: {fileID: 0}
   - Name: AddLife
+    IsPaused: 0
     Clip: {fileID: 8300000, guid: 0f35355fc0004ab44bf00b2b31f5acc0, type: 3}
     Volume: 0.4
     VolumeVariance: 0.2
@@ -117,6 +125,7 @@ MonoBehaviour:
     MixerGroup: {fileID: 0}
     Source: {fileID: 0}
   - Name: Destruction
+    IsPaused: 0
     Clip: {fileID: 8300000, guid: b98b6ef4a57a2de4db8351866006b3b5, type: 3}
     Volume: 0.85
     VolumeVariance: 0.1
@@ -126,6 +135,7 @@ MonoBehaviour:
     MixerGroup: {fileID: 0}
     Source: {fileID: 0}
   - Name: Projectiles
+    IsPaused: 0
     Clip: {fileID: 8300000, guid: f2b65f77afadc7d488fa6aadad007365, type: 3}
     Volume: 1
     VolumeVariance: 0.1
@@ -135,6 +145,7 @@ MonoBehaviour:
     MixerGroup: {fileID: 0}
     Source: {fileID: 0}
   - Name: Tap
+    IsPaused: 0
     Clip: {fileID: 8300000, guid: f2df58715c1fc814ca911b2fef05e96d, type: 3}
     Volume: 0.5
     VolumeVariance: 0.1
@@ -144,6 +155,7 @@ MonoBehaviour:
     MixerGroup: {fileID: 0}
     Source: {fileID: 0}
   - Name: Turn On
+    IsPaused: 0
     Clip: {fileID: 8300000, guid: bb8923bad19c8df4e85b6653e59e43de, type: 3}
     Volume: 0.5
     VolumeVariance: 0
@@ -153,6 +165,7 @@ MonoBehaviour:
     MixerGroup: {fileID: 0}
     Source: {fileID: 0}
   - Name: ScoreTier
+    IsPaused: 0
     Clip: {fileID: 8300000, guid: f37eb9b5fab6d68418e39a6d3cbdf887, type: 3}
     Volume: 0.6
     VolumeVariance: 0
@@ -162,11 +175,22 @@ MonoBehaviour:
     MixerGroup: {fileID: 0}
     Source: {fileID: 0}
   - Name: Slowdown
+    IsPaused: 0
     Clip: {fileID: 8300000, guid: 9f546dbd9fe5d9d40b8d2d51a15007a3, type: 3}
     Volume: 0.6
     VolumeVariance: 0.1
     Pitch: 0.8
     PitchVariance: 0.2
+    Loop: 0
+    MixerGroup: {fileID: 0}
+    Source: {fileID: 0}
+  - Name: Explosion
+    IsPaused: 0
+    Clip: {fileID: 8300000, guid: 0c55728cb6f96c24986af708ba8e3254, type: 3}
+    Volume: 0.75
+    VolumeVariance: 0.1
+    Pitch: 1
+    PitchVariance: 0
     Loop: 0
     MixerGroup: {fileID: 0}
     Source: {fileID: 0}

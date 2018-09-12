@@ -8,11 +8,12 @@ public class AudioManager : MonoBehaviour {
     public static AudioManager Instance;
 
     public AudioMixerGroup MixerGroup;
-
+    public bool IsMuted;
     public Sound[] Sounds;
     public bool FirstGameFrame = true;
 
     private void Awake() {
+        IsMuted = false;
         if (Instance != null) {
             Destroy(gameObject);
         }
@@ -31,6 +32,7 @@ public class AudioManager : MonoBehaviour {
     }
 
     public void Play(string sound) {
+        if (IsMuted) return;
         var s = Array.Find(Sounds, item => item.Name == sound);
         if (s == null) {
             Debug.LogWarning("Sound: " + name + " not found!");
@@ -58,6 +60,7 @@ public class AudioManager : MonoBehaviour {
     }
 
     public void ResumeAll() {
+        if (IsMuted) return;
         foreach (var s in Sounds) {
             if (s == null) continue;
             if (!s.IsPaused) continue;
@@ -76,7 +79,7 @@ public class AudioManager : MonoBehaviour {
     private void Update() {
         if (!FirstGameFrame ||
             SceneManager.GetActiveScene().buildIndex == 0) return;
-        Play("Turn On");
+        if (!IsMuted) Play("Turn On");
         FirstGameFrame = false;
     }
 }

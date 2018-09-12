@@ -34,6 +34,6 @@ public class MainMenuScript : MonoBehaviour {
             hit.collider != PlayCollider) return;
         _audioManager.Play("Tap");
         if (Vibration.HasVibrator()) Vibration.Vibrate(20);
-        _mainMenuAnim.Play("StartGameAnimation");
+        _mainMenuAnim.CrossFadeInFixedTime("StartGameAnimation", 0.3f);
     }
 }

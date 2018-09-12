@@ -7,6 +7,7 @@ public class BarManager : MonoBehaviour {
     private Transform _destructionBarTransform;
     private Transform _magnetismBarTransform;
     private Transform _projectilesBarTransform;
+    private Transform _explosionBarTransform;
     private PlayerScriptWithAnimator _playerScript;
     private GameManagerScript _gameManagerScript;
     private float _destructionTimeLimit;
@@ -23,6 +24,9 @@ public class BarManager : MonoBehaviour {
             .GetComponent<Transform>();
         _projectilesBarTransform = GameObject
             .Find("Projectiles Bar Parent/Projectiles Bar")
+            .GetComponent<Transform>();
+        _explosionBarTransform = GameObject
+            .Find("Explosion Bar Parent/Explosion Bar")
             .GetComponent<Transform>();
         _playerScript = GameObject.Find("Player Animation Parent/Boost Stretcher/Player")
             .GetComponent<PlayerScriptWithAnimator>();
@@ -64,6 +68,15 @@ public class BarManager : MonoBehaviour {
             CalculatePositionByTime(_projectilesBarTransform,
                 _gameManagerScript.Timer.ProjectilesTimeLimit,
                 _gameManagerScript.Timer.ProjectilesTimer);
+        }
+        
+        if (_playerScript.IsAboutToExplode) {
+            CalculateScaleByTime(_explosionBarTransform,
+                _gameManagerScript.Timer.ExplosionTimeLimit,
+                _gameManagerScript.Timer.ExplosionTimer);
+            CalculatePositionByTime(_explosionBarTransform,
+                _gameManagerScript.Timer.ExplosionTimeLimit,
+                _gameManagerScript.Timer.ExplosionTimer);
         }
 
         if (!_playerScript.IsMagnetising) return;
